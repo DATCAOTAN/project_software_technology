@@ -1,0 +1,71 @@
+*{
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+    font-family: Arial;
+}
+#container{
+    display: flex;
+    height: 100vh;
+}
+#left{
+    display: flex;
+    width: 50%;
+    padding: 150px 100px;
+    align-items: center;
+    flex-direction: column;
+}
+h5{
+    margin-top: 10px;
+}
+input[type="text"] {
+    width: 400px; /* Độ rộng của input */
+    padding: 10px 8px ; /* Khoảng cách bên trong của input */
+    border: 1px solid #ccc; /* Viền input */
+    border-radius: 5px; /* Bo góc viền input */
+    font-size: 16px; /* Kích thước chữ */
+    background-color: #E9F1FD;
+    outline: none; /* Loại bỏ đường viền khi focus */
+    margin-top: 40px;
+}
+input[type="password"] {
+    width: 400px; /* Độ rộng của input */
+    padding: 10px 8px; /* Khoảng cách bên trong của input */
+    border: 1px solid #ccc; /* Viền input */
+    border-radius: 5px; /* Bo góc viền input */
+    font-size: 16px; /* Kích thước chữ */
+    background-color: #E9F1FD;
+    margin-top: 20px;
+    outline: none; /* Loại bỏ đường viền khi focus */
+}
+.button {
+    margin-top: 30px;
+    padding: 10px 152px; /* Khoảng cách bên trong của button */
+    border: none; /* Loại bỏ viền */
+    border-radius: 5px; /* Bo góc viền button */
+    font-size: 16px; /* Kích thước chữ */
+    background-color: #007bff; /* Màu nền của button */
+    color: #fff; /* Màu chữ của button */
+    cursor: pointer; /* Đổi con trỏ chuột thành pointer khi di chuyển qua button */
+    text-decoration: none; /* Loại bỏ gạch chân mặc định */
+}
+.button:hover {
+    background-color: #0056b3; /* Màu nền thay đổi khi hover */
+}
+#right{
+    width: 50%;
+    background-color: rgba(63, 123, 232, 0.5);
+    background-image: url("/Project_web2/web/public/images/Login.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    background-blend-mode: overlay;
+}
+#right h1{
+    font-size: 60px;
+}

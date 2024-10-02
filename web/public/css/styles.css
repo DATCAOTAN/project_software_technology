@@ -1,0 +1,119 @@
+/* CSS cho header */
+.header {
+    width: 100%;
+    display: flex;
+    background-color: white;
+    align-items: center;
+    height: 10vh;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+.header #header_left {
+    display: flex;
+    position: fixed;
+    width: 15%;
+    background-color: #3162B9;
+    align-items: center;
+    z-index: 1000;
+}
+
+.header #header_left #SGU {
+    color: white;
+    margin: 30px 0px 30px 30px;
+}
+
+.header #header_left #Quiz {
+    margin-left: 5px;
+    color: white;
+}
+
+.header #user {
+    border-radius: 10px;
+    padding: 12px 14px 12px 14px;
+    background-color: #e0e0e0;
+    margin-left: auto;
+    margin-right: 80px;
+    cursor: pointer;
+}
+
+.header li {
+    padding: 5px;
+}
+
+.header ul {
+    list-style-type: none;
+}
+
+.header a {
+    text-decoration: none;
+    color: #878787;
+}
+
+.header #user:hover {
+    background-color: #cdcdcd;
+}
+
+.header #drop_menu {
+    position: absolute;
+    top: 55px;
+    left: 1205px;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.hidden {
+    display: none;
+}
+
+/* CSS cho left menu */
+#left_menu {
+    width: 15%;
+    background-color: #f2f2f2;
+    height: 90vh;
+    overflow-y: auto;
+    float: left;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    position: fixed;
+    top: 10vh; /* Bắt đầu từ dưới của header */
+    z-index: 1000;
+}
+
+#left_menu h4 {
+    color: #878787;
+    padding-left: 10px;
+}
+
+#left_menu ul {
+    list-style-type: none;
+}
+
+#left_menu li {
+    margin: 0px 5px;
+}
+
+#left_menu a {
+    margin: 10px 0px;
+    border-radius: 5px;
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #878787;
+}
+
+#left_menu a:hover {
+    background-color: #cce2fe;
+    color: black;
+}
+
+/* CSS cho phần detail */
+.detail {
+    margin-left: 15%;
+    padding: 20px;
+    height: 90vh;
+    background-color: #E0E0E0;
+    margin-top: 10vh; /* Để tránh việc nội dung bị che phủ bởi header và left menu */
+}
