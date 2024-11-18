@@ -1,0 +1,94 @@
+drop schema CNPM;
+create schema CNPM;
+use CNPM;
+
+-- Tạo bảng Tai_khoan
+CREATE TABLE Tai_khoan (
+    ID VARCHAR(50) PRIMARY KEY,
+    Ten_tai_khoan VARCHAR(255) UNIQUE NOT NULL,
+    Mat_khau VARCHAR(255) NOT NULL
+);
+
+-- Tạo bảng Nhan_vien
+CREATE TABLE Nhan_vien (
+    ID VARCHAR(50) PRIMARY KEY,
+    Ten_khach_hang VARCHAR(255),
+    So_dien_thoai VARCHAR(20),
+    Email VARCHAR(255) UNIQUE,
+    Tai_khoan_ID VARCHAR(50),
+    FOREIGN KEY (Tai_khoan_ID) REFERENCES Tai_khoan(ID)
+);
+
+-- Tạo bảng Ban
+CREATE TABLE Ban (
+    ID VARCHAR(50) PRIMARY KEY,
+    So_ban INT NOT NULL,
+    Suc_chua INT,
+    Trang_thai VARCHAR(50),
+    Vi_tri VARCHAR(255),
+    Mo_ta TEXT
+);
+
+-- Tạo bảng Khach_hang
+CREATE TABLE Khach_hang (
+    ID VARCHAR(50) PRIMARY KEY,
+    Ten_khach_hang VARCHAR(255) NOT NULL,
+    So_dien_thoai VARCHAR(20),
+    Email VARCHAR(255) UNIQUE
+);
+
+-- Tạo bảng Don_dat_mon_Hoa_don
+CREATE TABLE Don_dat_mon_Hoa_don (
+    ID VARCHAR(50) PRIMARY KEY,
+    Ngay_gio DATETIME NOT NULL,
+    Tong_tien DECIMAL(15, 2),
+    Trang_thai VARCHAR(50),
+    Trang_thai_thanh_toan BOOLEAN,
+    Khach_hang_ID VARCHAR(50),
+    Nhan_vien_ID VARCHAR(50),
+    FOREIGN KEY (Khach_hang_ID) REFERENCES Khach_hang(ID),
+    FOREIGN KEY (Nhan_vien_ID) REFERENCES Nhan_vien(ID)
+);
+
+-- Tạo bảng Thuc_uong
+
+CREATE TABLE Thuc_uong (
+    ID VARCHAR(50) PRIMARY KEY,
+    Ten_thuc_uong VARCHAR(255) NOT NULL,
+    Mo_ta TEXT,
+    image_URL VARCHAR(255)
+);
+
+-- Tạo bảng Chi_tiet_thuc_uong
+CREATE TABLE Chi_tiet_thuc_uong (
+	Thuc_uong_ID VARCHAR(50),
+    Gia_tien DECIMAL(15, 2),
+    Size ENUM('S', 'M', 'L'),
+    Trang_thai_ban VARCHAR(50),
+    PRIMARY KEY (Thuc_uong_ID, Size),
+   
+    FOREIGN KEY (Thuc_uong_ID) REFERENCES Thuc_uong(ID)
+);
+
+
+-- Tạo bảng Chi_tiet_phuong_thuc_thanh_toan
+CREATE TABLE Chi_tiet_phuong_thuc_thanh_toan (
+    ID VARCHAR(50) PRIMARY KEY,
+    Ten VARCHAR(255) NOT NULL,
+    Fee DECIMAL(10, 2)
+);
+
+-- Tạo bảng Phuong_thuc_thanh_toan
+CREATE TABLE Phuong_thuc_thanh_toan (
+    ID VARCHAR(50) PRIMARY KEY,
+    Ten VARCHAR(255) NOT NULL
+);
+
+-- Tạo bảng Phan_hoi
+CREATE TABLE Phan_hoi (
+    ID VARCHAR(50) PRIMARY KEY,
+    So_sao INT,
+    Noi_dung TEXT,
+    Ngay_gio DATETIME
+);
+
