@@ -1,82 +1,67 @@
 import mysql.connector
 import random
+from faker import Faker
 from datetime import datetime, timedelta
 
-def connect():
-    user = "root"
-    password = "123456789"
-    host = "localhost"
-    database = "CNPM"
+# Kết nối tới cơ sở dữ liệu MySQL
+conn = mysql.connector.connect(
+    host="localhost",     # Thay đổi nếu bạn sử dụng host khác
+    user="root",          # Thay đổi nếu bạn có user khác
+    password="123456789",  # Thay đổi mật khẩu của bạn
+    database="CNPM"
+)
 
-    conn = mysql.connector.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database
-    )
+cursor = conn.cursor()
 
-    if conn.is_connected():
-        print("Kết nối thành công")
-    else:
-        print("Lỗi kết nối")
-    return conn
+# Khởi tạo Faker để tạo dữ liệu ngẫu nhiên
+fake = Faker()
+#
+sl_tkhoan=10
+sl_KHang=sl_tkhoan
+sl_thucUong=30
+sl_Hdon=30
 
-def insert_data(conn, num_records):
-    cursor = conn.cursor()
 
-        # Thêm dữ liệu vào bảng Tai_khoan
-    cursor.execute("INSERT INTO Tai_khoan (Ten_tai_khoan, Mat_khau) VALUES ('admin', 'password1')")
-    conn.commit()
-    for i in range(2, 11):
-        cursor.execute(f"INSERT INTO Tai_khoan (Ten_tai_khoan, Mat_khau) VALUES ('user{i}', 'password{i}')")
+# Hàm thêm dữ liệu ngẫu nhiên vào bảng tai_khoan
 
-    conn.commit()  # Cần commit để đảm bảo dữ liệu đã được lưu vào bảng Tai_khoan trước khi thêm vào bảng Nhan_vien
 
-    # Thêm dữ liệu vào bảng Nhan_vien
-    for i in range(2, 11):
-        cursor.execute(f"INSERT INTO Nhan_vien (ID, Ten_nhan_vien, So_dien_thoai, Email) "
-                    f"VALUES ({i}, 'Nhan vien {i}', '012345678{i}', 'nhanvien{i}@example.com')")
+
+def them_tai_khoan_random():
+    cursor.execute("INSERT INTO Tai_khoan (ten_tai_khoan, mat_khau) VALUES ('admin', 'password1')")
     conn.commit()
 
+    for i in range(2, sl_tkhoan+1):
+        ten_tai_khoan = fake.user_name()
+        mat_khau = fake.password()
+        query = "INSERT INTO tai_khoan (ten_tai_khoan, mat_khau) VALUES (%s, %s)"
+        cursor.execute(query, (ten_tai_khoan, mat_khau))
+    conn.commit()
 
-    # Thêm dữ liệu vào bảng Ban
-    vi_tri_list = ["Trong nha", "Ngoai troi", "Phong VIP", "Ban cong"]
-    trang_thai_list = ["Trong", "Dang su dung", "Dang don dep", "Da dat"]
+# Hàm thêm dữ liệu ngẫu nhiên vào bảng nhan_vien
+def them_nhan_vien_random():
+    for i in range(2, sl_tkhoan+1):
+        ten = fake.name()
+        so_dien_thoai = f"092345678{i}"
+        email = fake.email()
+    # Giả sử các ID từ 1 đến 10 đã có trong bảng tai_khoan
+        query = "INSERT INTO nhan_vien (ten, so_dien_thoai, email, tai_khoan_id) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (ten, so_dien_thoai, email, i))
+    conn.commit()
 
-    for i in range(1, 21):
-        vi_tri = random.choice(vi_tri_list)
-        trang_thai = random.choice(trang_thai_list)
+# Hàm thêm dữ liệu ngẫu nhiên vào bảng khach_hang
+def them_khach_hang_random():
+    for i in range(1, sl_KHang+1):
+        ten_khach_hang = fake.name()
+        so_dien_thoai = f"012345678{i}"
+        email = fake.email()
+        query = "INSERT INTO khach_hang (ten_khach_hang, so_dien_thoai, email) VALUES (%s, %s, %s)"
+        cursor.execute(query, (ten_khach_hang, so_dien_thoai, email))
+    conn.commit()
 
-        cursor.execute(
-            f"INSERT INTO Ban (So_ban, Suc_chua, Trang_thai, Vi_tri, Mo_ta) "
-            f"VALUES ({i}, {random.randint(2, 10)}, '{trang_thai}', '{vi_tri}', 'Ban so {i}')"
-        )
-
-    # Thêm dữ liệu vào bảng Khach_hang
-    for i in range(1, num_records + 1):
-        cursor.execute(f"INSERT INTO Khach_hang (Ten_khach_hang, So_dien_thoai, Email) "
-                       f"VALUES ('Khach hang {i}', '098765432{i}', 'khachhang{i}@example.com')")
-
-    #Thêm dữ liệu vào bảng Don_dat_mon_Hoa_don
-    order_statuses = ["Da dat", "Dang lam", "Da co"]
-
-    for i in range(1, num_records + 1):
-        ngay_gio = datetime.now() - timedelta(days=random.randint(1, 30))
-        # Format the datetime to a proper string format for SQL (YYYY-MM-DD HH:MM:SS)
-        formatted_ngay_gio = ngay_gio.strftime('%Y-%m-%d %H:%M:%S')
-        
-        trang_thai = random.choice(order_statuses)
-        trang_thai_thanh_toan = random.choice([True, False])
-        
-        cursor.execute(
-            f"INSERT INTO Don_dat_mon_Hoa_don (Ngay_Gio, Tong_tien, Trang_thai, Trang_thai_thanh_toan) "
-            f"VALUES ('{formatted_ngay_gio}', {random.randint(100000, 1000000)}, '{trang_thai}', {trang_thai_thanh_toan})"
-        )
-
-    # Thêm dữ liệu vào bảng Thuc_uong và Chi_tiet_thuc_uong
+def them_du_lieu_thuc_uong():
     sizes = ['S', 'M', 'L']
 
-    for i in range(1, 31):
+    for i in range(1, sl_thucUong+1):
         ten_thuc_uong = f"Thuc uong {i}"
         mo_ta = f"Mo ta {i}"
         image_url = f"https://example.com/image{i}.jpg"
@@ -96,35 +81,102 @@ def insert_data(conn, num_records):
                 f"INSERT INTO Chi_tiet_Thuc_uong (Thuc_uong_ID, Size, Gia_tien, Trang_thai_ban) "
                 f"VALUES ('{thuc_uong_id}', '{size}', {gia_tien}, '{trang_thai_ban}')"
             )
+def lay_so_tien_thuc_uong(thuc_uong_id, size):
+    query = f"""
+    SELECT Gia_tien 
+    FROM Chi_tiet_Thuc_uong 
+    WHERE Thuc_uong_ID = {thuc_uong_id} AND Size = '{size}'
+    """
+    
+    cursor.execute(query)
+    result = cursor.fetchone()
+    
+    if result:
+        return result[0]  # Trả về giá tiền
+    else:
+        return None  # Không tìm thấy kết quả
+    
 
-    # Thêm dữ liệu vào bảng Chi_tiet_phuong_thuc_thanh_toan
-    payment_names = ["Vietcombank", "Zalopay", "Momo", "MBank", "Techcombank"]
-
-    for payment_name in payment_names:
-        fee = round(random.uniform(1.0, 3.0), 2)
-        cursor.execute(
-            f"INSERT INTO Chi_tiet_phuong_thuc_thanh_toan (Ten, Fee) "
-            f"VALUES ('{payment_name}', {fee})"
-        )
-
-    # Thêm ba loại phương thức thanh toán vào bảng Phuong_thuc_thanh_toan
+# Hàm thêm dữ liệu ngẫu nhiên vào bảng phuong_thuc_thanh_toan
+def them_phuong_thuc_thanh_toan_random():
     payment_methods = ["Tien mat", "Online banking", "E-wallet"]
     for method in payment_methods:
         cursor.execute(f"INSERT INTO Phuong_thuc_thanh_toan (Ten) VALUES ('{method}')")
-
-    # Thêm dữ liệu vào bảng Phan_hoi
-    for i in range(1, num_records + 1):
-        ngay_gio = datetime.now() - timedelta(days=random.randint(1, 30))
-        cursor.execute(f"INSERT INTO Phan_hoi (So_sao, Noi_dung, Ngay_Gio) "
-                       f"VALUES ({random.randint(1, 5)}, 'Phan hoi {i}', '{ngay_gio}')")
-
     conn.commit()
-    print(f"Thêm {num_records} bản ghi thành công cho mỗi bảng!")
 
-# Kết nối đến cơ sở dữ liệu và thêm dữ liệu
-connection = connect()
-num_records = 30  # Số lượng bản ghi muốn thêm
-insert_data(connection, num_records)
+# Hàm thêm dữ liệu ngẫu nhiên vào bảng chi_tiet_phuong_thuc_thanh_toan
+def them_chi_tiet_phuong_thuc_thanh_toan_random():
+    for i in range (1,4):
+        phuong_thuc_thanh_toan_id=i
+        if(phuong_thuc_thanh_toan_id==1):continue
+        elif(phuong_thuc_thanh_toan_id==2):
+            payment_names= ["Vietcombank", "MBank", "Techcombank"]
+            for payment_name in payment_names:
+                fee = round(random.uniform(1.0, 3.0), 2)
+                cursor.execute( 
+                    f"INSERT INTO Chi_tiet_phuong_thuc_thanh_toan (phuong_thuc_thanh_toan_id,ten, fee) "
+                    f"VALUES ({phuong_thuc_thanh_toan_id},'{payment_name}', {fee})"
+                )
+        else:
+            payment_names=[ "Momo", "ZaloPay"]
+            for payment_name in payment_names:
+                fee = round(random.uniform(1.0, 3.0), 2)
+                cursor.execute(
+                    f"INSERT INTO Chi_tiet_phuong_thuc_thanh_toan (phuong_thuc_thanh_toan_id,ten, fee) "
+                    f"VALUES ({phuong_thuc_thanh_toan_id},'{payment_name}', {fee})"
+                )
+    conn.commit()
+
+# Hàm thêm dữ liệu ngẫu nhiên vào bảng hoa_don
+def them_hoa_don_cthd_random():
+    for i in range(1,sl_Hdon):
+        khach_hang_id = random.randint(1, sl_KHang)  # Giả sử có các ID khách hàng từ 1 đến 10
+        nhan_vien_id = random.randint(2, sl_tkhoan)   # Giả sử có các ID nhân viên từ 1 đến 10
+        data=chi_tiet_hoa_don_random()
+        tong_tien = lay_so_tien_thuc_uong(data[0],data[1])*data[2]
+        trang_thai = random.choice(["Da dat", "Dang lam", "Da co"])
+        trang_thai_thanh_toan = random.choice([True, False])
+        ngay_gio = datetime.now() - timedelta(days=random.randint(1, 30))
+        phuong_thuc_thanh_toan_id = random.randint(1, 3)  # Giả sử có ID phương thức thanh toán từ 1 đến 5
+        query = """
+        INSERT INTO hoa_don (khach_hang_id, nhan_vien_id,ngay_gio, tong_tien, trang_thai, trang_thai_thanh_toan, phuong_thuc_thanh_toan_id)
+        VALUES (%s, %s, %s,%s, %s, %s, %s)
+        """
+        cursor.execute(query, (khach_hang_id, nhan_vien_id,ngay_gio, tong_tien, trang_thai, trang_thai_thanh_toan, phuong_thuc_thanh_toan_id))
+        conn.commit()
+        #Này là mặt định mua chỉ được 1 món không radom
+        query = "INSERT INTO chi_tiet_hoa_don (hoa_don_id, thuc_uong_id, size, so_luong) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (i,data[0], data[1], data[2]))
+        conn.commit()
+
+# Hàm thêm dữ liệu ngẫu nhiên vào bảng chi_tiet_hoa_don
+def chi_tiet_hoa_don_random():
+    thuc_uong_id = random.randint(1, 10)  # Giả sử có các ID thức uống từ 1 đến 10
+    size = random.choice(['S', 'M', 'L'])
+    so_luong = random.randint(1, 3)
+    return [thuc_uong_id,size,so_luong]
+
+# Hàm thêm dữ liệu ngẫu nhiên vào bảng phan_hoi
+def them_phan_hoi_random():
+    for i in range(1,sl_Hdon):
+        so_sao = random.randint(1, 5)
+        noi_dung = fake.sentence()
+        query = "INSERT INTO phan_hoi (hoa_don_id, so_sao, noi_dung) VALUES (%s, %s, %s)"
+        cursor.execute(query, (i, so_sao, noi_dung))
+    conn.commit()
+
+# Thêm nhiều dữ liệu ngẫu nhiên
+
+them_tai_khoan_random()
+them_nhan_vien_random()
+them_khach_hang_random()
+them_phuong_thuc_thanh_toan_random()
+them_chi_tiet_phuong_thuc_thanh_toan_random()
+them_du_lieu_thuc_uong()
+them_hoa_don_cthd_random()
+
+them_phan_hoi_random()
 
 # Đóng kết nối
-connection.close()
+cursor.close()
+conn.close()

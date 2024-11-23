@@ -2,47 +2,29 @@ DROP SCHEMA IF EXISTS CNPM;
 CREATE SCHEMA CNPM;
 USE CNPM;
 
--- Tạo bảng Tai_khoan
-CREATE TABLE Tai_khoan (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Ten_tai_khoan VARCHAR(255) UNIQUE NOT NULL,
-    Mat_khau VARCHAR(255) NOT NULL
+-- Tạo bảng tai_khoan
+CREATE TABLE tai_khoan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ten_tai_khoan VARCHAR(50) NOT NULL,
+    mat_khau VARCHAR(50) NOT NULL
 );
 
--- Tạo bảng Nhan_vien
-CREATE TABLE Nhan_vien (
-    ID INT PRIMARY KEY,
-    Ten_nhan_vien VARCHAR(255),
-    So_dien_thoai VARCHAR(20),
-    Email VARCHAR(255) UNIQUE,
-    FOREIGN KEY (ID) REFERENCES Tai_khoan(ID)
+-- Tạo bảng nhan_vien
+CREATE TABLE nhan_vien (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ten VARCHAR(100) NOT NULL,
+    so_dien_thoai VARCHAR(50),
+    email VARCHAR(100),
+    tai_khoan_id INT UNIQUE,  -- Quan hệ 1-1
+    FOREIGN KEY (tai_khoan_id) REFERENCES tai_khoan(id)
 );
 
--- Tạo bảng Ban
-CREATE TABLE Ban (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    So_ban INT NOT NULL,
-    Suc_chua INT,
-    Trang_thai VARCHAR(50),
-    Vi_tri VARCHAR(255),
-    Mo_ta TEXT
-);
-
--- Tạo bảng Khach_hang
-CREATE TABLE Khach_hang (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Ten_khach_hang VARCHAR(255) NOT NULL,
-    So_dien_thoai VARCHAR(20),
-    Email VARCHAR(255) UNIQUE
-);
-
--- Tạo bảng Don_dat_mon_Hoa_don
-CREATE TABLE Don_dat_mon_Hoa_don (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Ngay_gio DATETIME NOT NULL,
-    Tong_tien DECIMAL(15, 2),
-    Trang_thai VARCHAR(50),
-    Trang_thai_thanh_toan BOOLEAN
+-- Tạo bảng khach_hang
+CREATE TABLE khach_hang (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ten_khach_hang VARCHAR(100) NOT NULL,
+    so_dien_thoai VARCHAR(15),
+    email VARCHAR(100)
 );
 
 -- Tạo bảng Thuc_uong
@@ -55,31 +37,65 @@ CREATE TABLE Thuc_uong (
 
 -- Tạo bảng Chi_tiet_thuc_uong
 CREATE TABLE Chi_tiet_thuc_uong (
-    Thuc_uong_ID INT,
-    Gia_tien DECIMAL(15, 2),
-    Size ENUM('S', 'M', 'L'),
+    Thuc_uong_ID INT NOT NULL,
+    Size ENUM('S', 'M', 'L') NOT NULL,
+    Gia_tien DECIMAL(15, 2) NOT NULL,
     Trang_thai_ban VARCHAR(50),
     PRIMARY KEY (Thuc_uong_ID, Size),
-    FOREIGN KEY (Thuc_uong_ID) REFERENCES Thuc_uong(ID)
+    FOREIGN KEY (Thuc_uong_ID) REFERENCES Thuc_uong(ID) ON DELETE CASCADE
 );
 
--- Tạo bảng Chi_tiet_phuong_thuc_thanh_toan
-CREATE TABLE Chi_tiet_phuong_thuc_thanh_toan (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Ten VARCHAR(255) NOT NULL,
-    Fee DECIMAL(10, 2)
+-- Tạo bảng phuong_thuc_thanh_toan
+CREATE TABLE phuong_thuc_thanh_toan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ten VARCHAR(100) NOT NULL
 );
 
--- Tạo bảng Phuong_thuc_thanh_toan
-CREATE TABLE Phuong_thuc_thanh_toan (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Ten VARCHAR(255) NOT NULL
+-- Tạo bảng chi_tiet_phuong_thuc_thanh_toan
+CREATE TABLE chi_tiet_phuong_thuc_thanh_toan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    phuong_thuc_thanh_toan_id INT,
+     ten VARCHAR(50),
+    fee FLOAT,
+   
+    FOREIGN KEY (phuong_thuc_thanh_toan_id) REFERENCES phuong_thuc_thanh_toan(id)
 );
 
--- Tạo bảng Phan_hoi
-CREATE TABLE Phan_hoi (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    So_sao INT,
-    Noi_dung TEXT,
-    Ngay_gio DATETIME
+-- Tạo bảng hoa_don
+CREATE TABLE hoa_don (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    khach_hang_id INT,
+    nhan_vien_id INT,
+    ngay_gio DATETIME NOT NULL,
+    tong_tien FLOAT NOT NULL,
+    trang_thai VARCHAR(50),
+    trang_thai_thanh_toan BOOLEAN,
+    phuong_thuc_thanh_toan_id INT,
+    FOREIGN KEY (phuong_thuc_thanh_toan_id) REFERENCES phuong_thuc_thanh_toan(id),
+    FOREIGN KEY (khach_hang_id) REFERENCES khach_hang(id),
+    FOREIGN KEY (nhan_vien_id) REFERENCES nhan_vien(tai_khoan_id)
 );
+
+-- Tạo bảng chi_tiet_hoa_don
+CREATE TABLE chi_tiet_hoa_don (
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- Khóa chính tự động tăng
+    hoa_don_id INT,
+    thuc_uong_id INT,
+    size ENUM('S', 'M', 'L') NOT NULL,
+    so_luong INT NOT NULL,
+    FOREIGN KEY (hoa_don_id) REFERENCES hoa_don(id),
+    FOREIGN KEY (thuc_uong_id) REFERENCES thuc_uong(id),
+    CONSTRAINT fk_hoa_don_thuc_uong UNIQUE (hoa_don_id, thuc_uong_id, size)  -- Khóa duy nhất cho sự kết hợp này
+);
+
+
+-- Tạo bảng phan_hoi
+CREATE TABLE phan_hoi (
+    id INT AUTO_INCREMENT PRIMARY KEY,  
+    hoa_don_id INT UNIQUE,              
+    so_sao INT,                        
+    noi_dung VARCHAR(255),              
+    ngay_gio DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,  
+    FOREIGN KEY (hoa_don_id) REFERENCES hoa_don(id)  
+);
+
