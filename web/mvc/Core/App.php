@@ -36,5 +36,9 @@ class App{
         return [];
     }
 
+    public function error()
+    {
+    }
+
 }
 
