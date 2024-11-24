@@ -1,23 +1,22 @@
-<div id="header_left">
-    <h4 id="SGU">SGU</h4>
-    <h4 id="Quiz">Quiz</h4>
-</div>
-<div id="user">
-    <i class="fa-regular fa-address-card" style="padding-right:5px"></i><i class="fa-solid fa-angle-down"></i>
-</div>
-<div id="drop_menu" class="hidden">
-    <ul>
-        <li>
-            <a href="#" id="hienthongtin"><i class="fa-regular fa-user"></i>
-            Thông tin người dùng</a>
-        </li>
-        <li>
-            <a href="http://localhost/Project_web2/web/LoginController" id="login"><i class="fa-solid fa-right-to-bracket"></i>
-            Đăng nhập</a>
-        </li>
-        <li>
-            <a href="http://localhost/Project_web2/web/LoginController" class="" id="logout"><i class="fa-solid fa-right-to-bracket" style="transform: scaleX(-1)"></i>
-            Đăng xuất</a>
-        </li>
-    </ul>
-</div>
+<!-- header.php -->
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <a class="navbar-brand text-white" href="#">CNPM's cafe</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <!-- Dropdown button -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Tài khoản
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Thông tin cá nhân</a>
+                    <a class="dropdown-item" href="#">Đăng xuất</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
