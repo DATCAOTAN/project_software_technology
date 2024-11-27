@@ -5,7 +5,7 @@ class Database
     protected $hostname = "localhost";
     protected $username = "root";
     protected $password = "123456789";
-    protected $dbname = "web";
+    protected $dbname = "CNPM";
 
     function __construct(){
         $this->con = mysqli_connect($this->hostname, $this->username, $this->password);

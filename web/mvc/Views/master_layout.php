@@ -31,18 +31,14 @@
 
         /* Left Menu */
         .sidebar {
-            min-height: 100vh;
-            background-color: #343a40;
-            color: white;
-            padding: 20px;
+            min-height: 100%;
             display: flex;
             flex-direction: column;
         }
 
         /* Main Content */
         .main-content {
-            min-height: 100vh;
-            padding: 20px;
+            min-height: 100%;
             background-color: #f8f9fa;
         }
 
@@ -61,12 +57,12 @@
 
         <div class="row no-gutters">
             <!-- Left Menu -->
-            <div class="left_menu">
+            <div class="left_menu col-md-2 sidebar">
                 <?php include("inc/left_menu.php");?>
             </div>
 
             <!-- Main Content -->
-            <div class="col-md-9 main-content">
+            <div class="col-md-10 main-content">
                 <?php require_once "./mvc/Views/pages/".$page.".php"; ?>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <!-- left_menu.php -->
-<div class="sidebar bg-light p-3" style="width: 290px;"> <!-- Kéo dài chiều rộng của sidebar -->
+<div class="sidebar "> <!-- Kéo dài chiều rộng của sidebar -->
     <h4 class="mb-4 text-dark">Quản lý</h4>
 
     <ul class="nav flex-column">
@@ -22,7 +22,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="#" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="http://localhost/project_software_technology/web/ThucUongController" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-coffee mr-2"></i>
                     Thức uống
