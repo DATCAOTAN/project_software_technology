@@ -10,26 +10,122 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
         <style>
+            #ordersList{
+                padding: 0;
+                list-style: none;
+                margin: 0;
+            }
             .menu-item img {
                 width: 100%;
                 height: 150px;
                 object-fit: cover;
             }
+            .cart-summary, .orders-summary {
+                max-height: 480px; /* Đặt chiều cao tối đa */
+                overflow-y: auto; /* Hiển thị thanh cuộn dọc nếu nội dung vượt quá chiều cao */
+                overflow-x: hidden; /* Ẩn thanh cuộn ngang nếu không cần thiết */
+            }
             .menu-category {
                 margin-bottom: 20px;
             }
-            .cart-summary {
-                max-height: 500px;
-                overflow-y: auto;
+
+            /* Đổi màu cho checkbox khi món ăn hết hàng */
+            .out-of-stock {
+                background-color: #f0f0f0; /* Màu nền xám nhạt */
+                color: #999; /* Màu chữ xám nhạt */
             }
+
+            .out-of-stock input[type="radio"]:disabled {
+                background-color: #ddd; /* Màu nền xám khi vô hiệu hóa */
+            }
+
+            .out-of-stock label {
+                color: #999; /* Màu chữ xám cho label */
+                font-style: italic; /* Màu chữ nghiêng nếu món hết hàng */
+            }
+
+            /* Căn chỉnh lại các phần tử trong giỏ hàng */
+            .cart-item {
+                position: relative;
+                margin: 10px; /* Quan trọng: giúp căn chỉnh nút "X" tuyệt đối */
+            }
+
+            .cart-item-details {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .cart-item-name {
+                font-weight: bold;
+            }
+
+            .cart-item-price {
+                font-size: 0.9rem;
+                color: #777;
+            }
+
+            .cart-item-actions {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end; /* Căn phải các phần tử trong phần này */
+                width: 20%; /* Chiếm 40% chiều rộng */
+            }
+
+            .quantity-input {
+                width: 60px;
+                text-align: center;
+            }
+
+            .cart-item-actions span {
+                font-weight: bold;
+                font-size: 1rem;
+                margin-left: 10px;
+            }
+
+            /* Nút X di chuyển lên góc phải */
+            .remove-btn {
+                position: absolute;
+                top: -10px; /* Khoảng cách từ trên */
+                right: -10px; /* Khoảng cách từ phải */
+                padding: 3px 7px;
+                background-color: #dc3545;
+                font-size: 8px;
+                border: none;
+                color: white;
+                cursor: pointer;
+            }
+
+            .remove-btn:hover {
+                background-color: #c82333;
+            }
+
+            /* Điều chỉnh layout cho các màn hình nhỏ */
+            @media (max-width: 768px) {
+                .cart-item {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                .cart-item-actions {
+                    margin-top: 10px;
+                }
+            }
+
+            /* Khi ở màn hình nhỏ, các cột xếp chồng lên nhau */
+            @media (max-width: 768px) {
+                .col-lg-6, .col-lg-3 {
+                    flex: 0 0 100%; /* Chiều rộng 100% khi màn hình nhỏ */
+                    max-width: 100%;
+                }
+            }
+
         </style>
     </head>
     <body>
     
         <div class="container mt-4">
             <div class="row">
-                <!-- Menu -->
-                <div class="col-lg-8">
+                    <!-- Menu -->
+                <div class="col-lg-6 col-md-6 col-sm-12">
                     <h2>Menu</h2>
                     <div id="drink-container" class="row gy-4">
                         <!-- Dữ liệu sẽ được thêm vào đây bằng AJAX -->
@@ -42,14 +138,24 @@
                 </div>
 
                 <!-- Cart -->
-                <div class="col-lg-4">
-                    <h4>Your Cart (0)</h4>
-                    <div class="cart-summary border p-3">
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    <h4>Giỏ hàng (0)</h4>
+                    <div class="cart-summary border">
                         <p>No items in cart</p>
                     </div>
                     <div class="mt-3">
                         <h5>Total: 0 VND</h5>
                         <button class="btn btn-danger w-100" id="paymentButton">Payment</button>
+                    </div>
+                </div>
+
+                <!-- View Orders Section -->
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    <h4>Lịch sử mua hàng</h4>
+                    <div class="orders-summary border p-3">
+                        <ul id="ordersList">
+                            <!-- Các hóa đơn sẽ được hiển thị tại đây -->
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -197,9 +303,6 @@
                 const amountAfterFee = totalAmount + feeAmount;
 
                 // Update fee and amount after fee
-                console.log(totalAmount)
-                console.log(fee)
-                console.log(amountAfterFee)
                 $('#feeAmount').text(fee.toFixed(2));
                 $('#amountAfterFee').text(amountAfterFee.toFixed(0));
 
@@ -213,22 +316,66 @@
 
             // Handle Pay Now button click
             $('#payButton').on('click', function() {
-                $('#totalAmount').text(0);
-                const bankSelect = $('#bankMethod').find(':selected').text();
-                const paymentMethodSelect = $('#paymentMethod');
-                const selectedMethod = paymentMethods.find(method => method.id == paymentMethodSelect.val());
-                if (selectedMethod.name === 'Tien mat') {
-                    // If paying at counter, just close the modal
-                    alert('Hãy thanh toán tại quầy khi lấy nước');
-                    clearCart();
-                    $('#nameModal').modal('hide');
-                } else {
-                    // Show total and proceed to payment for other methods
-                    alert("Thanh toán "+bankSelect +" Thành công, hãy lấy hóa đơn khi nhận nước ở quầy");
-                    clearCart();
-                    $('#nameModal').modal('hide');
-                }
+                const paymentMethod = document.getElementById('paymentMethod').value; // Phương thức thanh toán
+                const customerId = <?php echo json_encode($userID); ?>;
+                const totalAmount = document.getElementById('totalAmount').innerText; // Tổng tiền
+
+                // Cấu trúc dữ liệu gửi lên server
+                const orderData = {
+                    customerId: customerId,
+                    paymentMethod: paymentMethod,
+                    totalAmount: totalAmount,
+                    items: cart
+                };
+
+                console.log(orderData);
+
+                // Gửi AJAX đến controller để tạo hóa đơn
+                fetch('./MenuController/createOrder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData) // Gửi dữ liệu dưới dạng JSON
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        $('#totalAmount').text(0);  // Reset tổng số tiền
+
+                        const bankSelect = $('#bankMethod').find(':selected').text();
+                        const paymentMethodSelect = $('#paymentMethod');
+                        const selectedMethod = paymentMethods.find(method => method.id == paymentMethodSelect.val());
+
+                        if (selectedMethod.name === 'Tien mat') {
+                            // Nếu thanh toán bằng tiền mặt
+                            alert('Hãy thanh toán tại quầy khi lấy nước');
+                            clearCart();
+                            $('#nameModal').modal('hide');
+                            loadOrders();
+                        } else {
+                            // Thanh toán thành công cho các phương thức khác
+                            alert("Thanh toán " + bankSelect + " Thành công, hãy lấy hóa đơn khi nhận nước ở quầy");
+                            clearCart();
+                            $('#nameModal').modal('hide');
+                            loadOrders();
+                        }
+
+                        // Tự động chọn lại phương thức thanh toán đầu tiên
+                        $('#paymentMethod').prop('selectedIndex', 0);  // Chọn phương thức thanh toán đầu tiên
+
+                        // Nếu phương thức thanh toán không phải Tiền mặt, cập nhật lại dropdown ngân hàng
+                        updateBankDropdown();
+                    } else {
+                        alert('Error creating order');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
             });
+
 
             // Hàm hiển thị chi tiết món ăn
             function showFoodDetails(drink) {
@@ -249,29 +396,36 @@
                     const sizeOption = document.createElement('div');
                     sizeOption.className = 'form-check border rounded p-3 cursor-pointer'; // Thêm hover và pointer
 
-                    sizeOption.innerHTML = `
-                        <input 
-                            class="form-check-input" 
-                            type="radio" 
-                            name="menuSize" 
-                            id="${size}" 
-                            value="${price}" 
-                            ${itemStatus === 'Het hang' ? 'disabled' : ''}>
-                        <label class="form-check-label" for="${size}">
-                            <strong>${size.charAt(0).toUpperCase() + size.slice(1)}</strong> - ${price} VND
-                        </label>
-                    `;
+                    // Kiểm tra trạng thái của món ăn, nếu hết hàng thì không hiển thị checkbox
+                    if (itemStatus === 'Het hang') {
+                        sizeOption.innerHTML = `
+                            <label class="form-check-label" for="${size}">
+                                <strong>${size.charAt(0).toUpperCase() + size.slice(1)}</strong> - ${price} VND (Đã hết hàng)
+                            </label>
+                        `;
+                        sizeOption.classList.add('out-of-stock');
+                    } else {
+                        sizeOption.innerHTML = `
+                            <input 
+                                class="form-check-input" 
+                                type="radio" 
+                                name="menuSize" 
+                                id="${size}" 
+                                value="${price}">
+                            <label class="form-check-label" for="${size}">
+                                <strong>${size.charAt(0).toUpperCase() + size.slice(1)}</strong> - ${price} VND
+                            </label>
+                        `;
 
-                    // Cho phép click toàn vùng
-                    sizeOption.addEventListener('click', () => {
-                        const radioInput = sizeOption.querySelector('input');
-                        if (!radioInput.disabled) {
+                        // Cho phép click toàn vùng
+                        sizeOption.addEventListener('click', () => {
+                            const radioInput = sizeOption.querySelector('input');
                             radioInput.checked = true; // Chọn
                             selectedPrice = parseFloat(radioInput.value);
                             const quantity = parseInt(document.getElementById('quantity').value) || 1;
                             updateTotalPrice(selectedPrice, quantity);
-                        }
-                    });
+                        });
+                    }
 
                     menuSizesContainer.appendChild(sizeOption);
                 });
@@ -476,18 +630,83 @@
                         paymentModal.show();
                     }
                 });
+
+                // Gọi hàm loadOrders khi trang tải
+                loadOrders();
             });
+
+            function loadOrders() {
+                $.ajax({
+                    url: './MenuController/viewOrders', // URL để lấy danh sách hóa đơn
+                    method: 'GET',
+                    success: function (response) {
+                        console.log(response); // Kiểm tra dữ liệu trả về
+                        const ordersList = $('#ordersList');
+                        ordersList.empty();
+
+                        // Nếu response là chuỗi JSON, parse thành đối tượng
+                        if (typeof response === 'string') {
+                            response = JSON.parse(response);
+                        }
+
+                        // Kiểm tra nếu có hóa đơn
+                        if (response.orders && response.orders.length > 0) {
+                            // Nhóm các hóa đơn theo ID hóa đơn
+                            const groupedOrders = {};
+                            response.orders.forEach(order => {
+                                if (!groupedOrders[order.hoa_don_id]) {
+                                    groupedOrders[order.hoa_don_id] = {
+                                        ngay_gio: order.ngay_gio,
+                                        tong_tien: order.tong_tien,
+                                        details: []
+                                    };
+                                }
+                                groupedOrders[order.hoa_don_id].details.push({
+                                    name: order.Ten_thuc_uong,
+                                    size: order.size,
+                                    quantity: order.so_luong
+                                });
+                            });
+
+                            // Hiển thị các hóa đơn đã nhóm
+                            Object.values(groupedOrders).forEach(order => {
+                                const orderDetails = order.details.map(detail => `
+                                    <p>
+                                        <strong>${detail.name}</strong> 
+                                        (Size: ${detail.size}, số lượng: ${detail.quantity})
+                                    </p>
+                                `).join('');
+
+                                ordersList.append(`
+                                    <div class="order-box border p-3 mb-3 rounded shadow-sm">
+                                        <p><strong>Ngày:</strong> ${order.ngay_gio}</p>
+                                        <p><strong>Tổng:</strong> ${order.tong_tien} VND</p>
+                                        <div class="order-details">
+                                            ${orderDetails}
+                                        </div>
+                                    </div>
+                                `);
+                            });
+                        } else {
+                            ordersList.append('<div class="alert alert-warning">No orders found.</div>');
+                        }
+                    },
+                    error: function () {
+                        $('#ordersList').html('<div class="alert alert-danger">Failed to load orders.</div>');
+                    }
+                });
+            }
 
             function updateCartUI() {
                 const cartSummary = document.querySelector('.cart-summary');
-                const cartTitle = document.querySelector('.col-lg-4 h4');
-                const totalPriceElement = document.querySelector('.col-lg-4 h5');
+                const cartTitle = document.querySelector('.col-lg-3 h4');
+                const totalPriceElement = document.querySelector('.col-lg-3 h5');
 
                 totalPrice = 0;
 
                 if (cart.length === 0) {
                     cartSummary.innerHTML = '<p>No items in cart</p>';
-                    cartTitle.textContent = 'Your Cart (0)';
+                    cartTitle.textContent = 'Giỏ hàng (0)';
                     totalPriceElement.textContent = 'Total: 0 VND';
                     return;
                 }
@@ -495,24 +714,63 @@
                 cartSummary.innerHTML = '';
                 let totalItems = 0;
 
-                cart.forEach(item => {
+                cart.forEach((item, index) => {
                     totalItems += item.quantity;
                     totalPrice += item.totalPrice;
 
                     cartSummary.innerHTML += `
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div>
-                                <strong>${item.name}</strong> (${item.size})<br>
-                                <small>${item.quantity} x ${item.price} VND</small>
+                        <div class="cart-item d-flex justify-content-between align-items-center">
+                            <div class="cart-item-details d-flex align-items-center">
+                                <div class="cart-item-name">
+                                    <strong>${item.name}</strong> (${item.size})
+                                </div>
+                                <div class="cart-item-price ml-3">
+                                    <small>${item.quantity} x ${item.price} VND</small>
+                                </div>
                             </div>
-                            <span class="text-danger">${item.totalPrice} VND</span>
+                            <div class="cart-item-actions d-flex align-items-center">
+                                <input 
+                                    type="number" 
+                                    class="form-control quantity-input" 
+                                    value="${item.quantity}" 
+                                    min="1" 
+                                    data-index="${index}" 
+                                    onchange="updateItemQuantity(event)">
+                            </div>
+                                    <span class="text-danger ml-2">${item.totalPrice} VND</span>
+                            <button 
+                                class="btn btn-sm btn-danger remove-btn" 
+                                onclick="removeItemFromCart(${index})">X</button>
                         </div>
                     `;
                 });
 
-                cartTitle.textContent = `Your Cart (${totalItems})`;
+                cartTitle.textContent = `Giỏ hàng (${totalItems})`;
                 totalPriceElement.textContent = `Total: ${totalPrice} VND`;
             }
+
+            function removeItemFromCart(index) {
+                // Xóa món đồ khỏi giỏ hàng theo index
+                cart.splice(index, 1);
+                updateCartUI(); // Cập nhật lại giao diện giỏ hàng
+            }
+            
+            function updateItemQuantity(event) {
+                const index = event.target.getAttribute('data-index'); // Lấy index của món đồ
+                const newQuantity = parseInt(event.target.value); // Lấy số lượng mới
+
+                if (newQuantity < 1) {
+                    alert('Số lượng phải lớn hơn 0.');
+                    return;
+                }
+
+                // Cập nhật lại số lượng và giá trị tổng
+                cart[index].quantity = newQuantity;
+                cart[index].totalPrice = cart[index].price * newQuantity;
+
+                updateCartUI(); // Cập nhật lại giao diện giỏ hàng
+            }
+
 
             function addToCart(drink, size, quantity, price) {
                 // Tìm sản phẩm trong giỏ hàng
@@ -566,14 +824,6 @@
                 localStorage.removeItem('cart'); // Xóa giỏ hàng khỏi localStorage
                 updateCartUI();
             }
-
-            // // Ví dụ: Thêm sự kiện khi nhấn nút Payment
-            // document.querySelector('.btn-danger').addEventListener('click', () => {
-            //     // Hiển thị thông báo hoặc thực hiện thanh toán
-            //     alert('Thank you for your payment!');
-            //     clearCart(); // Xóa giỏ hàng sau thanh toán
-            // });
-
         </script>
     </body>
 </html>
