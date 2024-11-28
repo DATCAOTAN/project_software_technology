@@ -4,7 +4,7 @@
 
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link text-dark active" href="TestController" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark active" href="QLtkController" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-user-cog mr-2"></i>
                     Tài khoản
@@ -13,7 +13,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="#" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="QLnvController" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-users mr-2"></i>
                     Nhân viên
@@ -22,7 +22,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="#" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-coffee mr-2"></i>
                     Thức uống
