@@ -1,10 +1,10 @@
 <!-- left_menu.php -->
-<div class="sidebar bg-light p-3" style="width: 290px;"> <!-- Kéo dài chiều rộng của sidebar -->
+<div class="sidebar "> <!-- Kéo dài chiều rộng của sidebar -->
     <h4 class="mb-4 text-dark">Quản lý</h4>
 
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link text-dark active" href="QLtkController" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark active" href="TestController" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-user-cog mr-2"></i>
                     Tài khoản
@@ -13,7 +13,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="QLnvController" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="#" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-users mr-2"></i>
                     Nhân viên
@@ -22,7 +22,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="http://localhost/project_software_technology/web/ThucUongController" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-coffee mr-2"></i>
                     Thức uống
@@ -40,7 +40,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="InvoiceController" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="#" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-box mr-2"></i>
                     Đơn hàng
@@ -49,7 +49,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="FeedbackController" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="#" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-comments mr-2"></i>
                     Xem phản hồi
