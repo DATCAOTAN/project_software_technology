@@ -204,12 +204,20 @@
         public function getInvoicesByCustomerId(int $customerId) {
             // SQL để lấy tất cả các hóa đơn của khách hàng
             $sql = "
-                SELECT h.id as hoa_don_id, h.ngay_gio, h.tong_tien, h.trang_thai, h.phuong_thuc_thanh_toan_id, 
-                    ct.thuc_uong_id, ct.size, ct.so_luong, tu.Ten_thuc_uong
+                SELECT h.id AS hoa_don_id, 
+                    h.ngay_gio, 
+                    h.tong_tien, 
+                    h.trang_thai, 
+                    h.phuong_thuc_thanh_toan_id, 
+                    ct.thuc_uong_id, 
+                    ct.size, 
+                    ct.so_luong, 
+                    tu.Ten_thuc_uong
                 FROM hoa_don h
                 LEFT JOIN chi_tiet_hoa_don ct ON h.id = ct.hoa_don_id
                 LEFT JOIN thuc_uong tu ON ct.thuc_uong_id = tu.id
                 WHERE h.khach_hang_id = ?
+                ORDER BY hoa_don_id DESC;
             ";
             
             // Chuẩn bị và thực thi câu lệnh

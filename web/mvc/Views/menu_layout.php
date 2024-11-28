@@ -249,6 +249,7 @@
             const paymentMethods = <?php echo json_encode($paymentMethods); ?>;
             let cart = [];
             let totalPrice = 0;
+            let amountAfterFee =0;
             let selectedPaymentMethod = null;
 
             // Function to populate the Payment Method dropdown
@@ -307,7 +308,7 @@
                 const fee = parseFloat(selectedBank.attr('data-fee'));
                 
                 const feeAmount = (totalAmount * fee) / 100;
-                const amountAfterFee = totalAmount + feeAmount;
+                amountAfterFee = totalAmount + feeAmount;
 
                 // Update fee and amount after fee
                 $('#feeAmount').text(fee.toFixed(2));
@@ -331,11 +332,9 @@
                 const orderData = {
                     customerId: customerId,
                     paymentMethod: paymentMethod,
-                    totalAmount: totalAmount,
+                    totalAmount: amountAfterFee,
                     items: cart
                 };
-
-                console.log(orderData);
 
                 // Gửi AJAX đến controller để tạo hóa đơn
                 fetch('./MenuController/createOrder', {
@@ -383,12 +382,11 @@
                 });
             });
 
-
             // Hàm hiển thị chi tiết món ăn
             function showFoodDetails(drink) {
                 document.getElementById('foodDetailsName').textContent = drink.name;
                 document.getElementById('foodDetailsDescription').textContent = drink.description || 'No description available';
-                document.getElementById('foodDetailsImage').src = drink.imageUrl || '';
+                document.getElementById('foodDetailsImage').src = 'public/images/thucuong/'+drink.imageUrl || '';
 
                 const menuSizesContainer = document.getElementById('menuSizes');
                 menuSizesContainer.innerHTML = ''; // Xóa nội dung cũ
@@ -502,11 +500,12 @@
                             $('#drink-container').empty();  // Xóa các món uống cũ
                             if (data.length > 0) {
                                 data.forEach(function(drink) {
+                                    console.log(drink);
                                     $('#drink-container').append(`
                                         <div class="col-lg-4 col-md-6 mb-4">
                                             <div class="card h-100 shadow-sm">
                                                 <div class="card-img-top text-center pt-3">
-                                                    <img src="${drink.image_url}" alt="${drink.name}" class="img-fluid rounded" style="min-height: 125px; width: 150px; object-fit: cover;">
+                                                    <img src="public/images/thucuong/${drink.imageUrl}" alt="${drink.name}" class="img-fluid rounded" style="min-height: 125px; width: 150px; object-fit: cover;">
                                                 </div>
                                                 <div class="card-body text-center">
                                                     <h6 class="card-title mb-1">${drink.name}</h6>
@@ -640,17 +639,16 @@
 
                 // Gọi hàm loadOrders khi trang tải
                 loadOrders();
+                setInterval(loadOrders, 60000);
             });
-
+            
             function loadOrders() {
                 $.ajax({
                     url: './MenuController/viewOrders', // URL để lấy danh sách hóa đơn
                     method: 'GET',
                     success: function (response) {
-                        console.log(response); // Kiểm tra dữ liệu trả về
                         const ordersList = $('#ordersList');
                         ordersList.empty();
-
                         // Nếu response là chuỗi JSON, parse thành đối tượng
                         if (typeof response === 'string') {
                             response = JSON.parse(response);
@@ -665,6 +663,7 @@
                                     groupedOrders[order.hoa_don_id] = {
                                         ngay_gio: order.ngay_gio,
                                         tong_tien: order.tong_tien,
+                                        trang_thai: order.trang_thai,
                                         details: []
                                     };
                                 }
@@ -674,7 +673,7 @@
                                     quantity: order.so_luong
                                 });
                             });
-
+                          
                             // Hiển thị các hóa đơn đã nhóm
                             Object.values(groupedOrders).forEach(order => {
                                 const orderDetails = order.details.map(detail => `
@@ -688,6 +687,11 @@
                                     <div class="order-box border p-3 mb-3 rounded shadow-sm">
                                         <p><strong>Ngày:</strong> ${order.ngay_gio}</p>
                                         <p><strong>Tổng:</strong> ${order.tong_tien} VND</p>
+                                        <p><strong>Trạng thái:</strong> 
+                                            <span style="color: ${order.trang_thai === 'Da xong' ? 'green' : (order.trang_thai === 'Da dat' ? 'red' : 'inherit')}">
+                                                ${order.trang_thai === 'Da dat' ? 'Đang làm' : 'Đã xong'}
+                                            </span>
+                                        </p>
                                         <div class="order-details">
                                             ${orderDetails}
                                         </div>
