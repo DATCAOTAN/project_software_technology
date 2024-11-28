@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 conn = mysql.connector.connect(
     host="localhost",     # Thay đổi nếu bạn sử dụng host khác
     user="root",          # Thay đổi nếu bạn có user khác
-    password="123456789",  # Thay đổi mật khẩu của bạn
+    password="123456",  # Thay đổi mật khẩu của bạn
     database="CNPM"
 )
 
@@ -64,7 +64,7 @@ def them_du_lieu_thuc_uong():
     for i in range(1, sl_thucUong+1):
         ten_thuc_uong = f"Thuc uong {i}"
         mo_ta = f"Mo ta {i}"
-        image_url = f"https://example.com/image{i}.jpg"
+        image_url = f"image{i}.jpg"
         cursor.execute(
             f"INSERT INTO Thuc_uong (Ten_thuc_uong, Mo_ta, image_URL) "
             f"VALUES ('{ten_thuc_uong}', '{mo_ta}', '{image_url}')"
@@ -134,7 +134,7 @@ def them_hoa_don_cthd_random():
         nhan_vien_id = random.randint(2, sl_tkhoan)   # Giả sử có các ID nhân viên từ 1 đến 10
         data=chi_tiet_hoa_don_random()
         tong_tien = lay_so_tien_thuc_uong(data[0],data[1])*data[2]
-        trang_thai = random.choice(["Da dat", "Dang lam", "Da co"])
+        trang_thai = random.choice(["Dang lam", "Da xong"])
         trang_thai_thanh_toan = random.choice([True, False])
         ngay_gio = datetime.now() - timedelta(days=random.randint(1, 30))
         phuong_thuc_thanh_toan_id = random.randint(1, 3)  # Giả sử có ID phương thức thanh toán từ 1 đến 5
@@ -159,10 +159,11 @@ def chi_tiet_hoa_don_random():
 # Hàm thêm dữ liệu ngẫu nhiên vào bảng phan_hoi
 def them_phan_hoi_random():
     for i in range(1,sl_Hdon):
+        ten_khach_hang = fake.name()
         so_sao = random.randint(1, 5)
         noi_dung = fake.sentence()
-        query = "INSERT INTO phan_hoi (hoa_don_id, so_sao, noi_dung) VALUES (%s, %s, %s)"
-        cursor.execute(query, (i, so_sao, noi_dung))
+        query = "INSERT INTO phan_hoi (ten_khach_hang, hoa_don_id, so_sao, noi_dung) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (ten_khach_hang, i, so_sao, noi_dung))
     conn.commit()
 
 # Thêm nhiều dữ liệu ngẫu nhiên
