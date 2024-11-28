@@ -105,7 +105,36 @@
                 margin: 0;                /* Loại bỏ khoảng cách mặc định */
                 border: 1px solid #ddd;   /* Tùy chọn để hiển thị rõ khung */
             }
+            .image-container {
+            display: flex;
+            justify-content: center; /* Canh giữa theo chiều ngang */
+            align-items: center;    /* Canh giữa theo chiều dọc */
+            width: 100%;            /* Độ rộng vùng chứa */
+            height: 300px;          /* Chiều cao vùng chứa (có thể thay đổi theo nhu cầu) */
+            overflow: hidden;       /* Ẩn phần ảnh thừa nếu cần */
+            }
 
+            .image-container img {
+            width: 100%;            /* Đảm bảo ảnh bao phủ toàn bộ chiều ngang */
+            height: 100%;           /* Đảm bảo ảnh bao phủ toàn bộ chiều dọc */
+            object-fit: cover;      /* Giữ tỉ lệ ảnh và cắt phần thừa nếu không khớp */
+            }
+            .image-container {
+                display: flex;
+                justify-content: center;   /* Canh giữa theo chiều ngang */
+                align-items: center;      /* Canh giữa theo chiều dọc */
+                width: 100%;              /* Đảm bảo ảnh chiếm toàn bộ vùng chứa */
+                height: 300px;            /* Chiều cao cố định cho container */
+                overflow: hidden;         /* Ẩn phần ảnh thừa */
+                border-radius: 0.5rem;    /* Bo góc cho container */
+            }
+
+            .image-container img {
+                width: 100%;              /* Ảnh chiếm toàn bộ chiều ngang container */
+                height: 100%;             /* Ảnh chiếm toàn bộ chiều cao container */
+                object-fit: cover;        /* Giữ tỉ lệ ảnh, cắt phần thừa nếu cần */
+                display: block;           /* Xóa khoảng trống dưới ảnh (nếu có) */
+            }
             /* Điều chỉnh layout cho các màn hình nhỏ */
             @media (max-width: 768px) {
                 .cart-item {
@@ -183,7 +212,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <img id="foodDetailsImage" src="" alt="Food Image" class="img-fluid rounded">
+                            <img id="foodDetailsImage" src="your-image-url.jpg" alt="Food Image" class="img-fluid rounded">
                         </div>
                         <div class="col-md-6">
                             <h3 id="foodDetailsName"></h3>
@@ -359,13 +388,13 @@
 
                         if (selectedMethod.name === 'Tien mat') {
                             // Nếu thanh toán bằng tiền mặt
-                            alert('Hãy thanh toán tại quầy khi lấy nước');
+                            alert('Hãy thanh toán tại quầy khi lấy nước Mã hóa đơn bạn là: '+ data.hoaDonId);
                             clearCart();
                             $('#nameModal').modal('hide');
                             loadOrders();
                         } else {
                             // Thanh toán thành công cho các phương thức khác
-                            alert("Thanh toán " + bankSelect + " Thành công, hãy lấy hóa đơn khi nhận nước ở quầy");
+                            alert("Thanh toán " + bankSelect + " Thành công, hãy lấy hóa đơn khi nhận nước ở quầy. Mã hóa đơn bạn là: "+ data.hoaDonId);
                             clearCart();
                             $('#nameModal').modal('hide');
                             loadOrders();
@@ -390,7 +419,7 @@
             function showFoodDetails(drink) {
                 document.getElementById('foodDetailsName').textContent = drink.name;
                 document.getElementById('foodDetailsDescription').textContent = drink.description || 'No description available';
-                document.getElementById('foodDetailsImage').src = 'public/images/thucuong/'+drink.imageUrl || '';
+                document.getElementById('foodDetailsImage').src = 'public/images/thuc_uong/'+drink.imageUrl || '';
 
                 const menuSizesContainer = document.getElementById('menuSizes');
                 menuSizesContainer.innerHTML = ''; // Xóa nội dung cũ
@@ -509,7 +538,7 @@
                                         <div class="col-lg-4 col-md-6 mb-4">
                                             <div class="card h-100 shadow-sm">
                                                 <div class="card-img-top text-center pt-3">
-                                                    <img src="public/images/thucuong/${drink.imageUrl}" alt="${drink.name}" class="img-fluid rounded" style="min-height: 125px; width: 150px; object-fit: cover;">
+                                                    <img src="public/images/thuc_uong/${drink.imageUrl}" alt="${drink.name}" class="img-fluid rounded" style="height: 125px; width: 150px; object-fit: cover;">
                                                 </div>
                                                 <div class="card-body text-center">
                                                     <h6 class="card-title mb-1">${drink.name}</h6>
@@ -665,6 +694,7 @@
                             response.orders.forEach(order => {
                                 if (!groupedOrders[order.hoa_don_id]) {
                                     groupedOrders[order.hoa_don_id] = {
+                                        id:order.hoa_don_id,
                                         ngay_gio: order.ngay_gio,
                                         tong_tien: order.tong_tien,
                                         trang_thai: order.trang_thai,
@@ -689,6 +719,7 @@
 
                                 ordersList.append(`
                                     <div class="order-box border p-3 mb-3 rounded shadow-sm">
+                                        <p><strong>Mã hóa đơn:</strong> ${order.id}</p>
                                         <p><strong>Ngày:</strong> ${order.ngay_gio}</p>
                                         <p><strong>Tổng:</strong> ${order.tong_tien} VND</p>
                                         <p><strong>Trạng thái:</strong> 
