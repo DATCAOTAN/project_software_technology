@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Thức Uống</title>
-    <!-- Link Bootstrap -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Link Font Awesome để sử dụng icon -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         .card {
             position: relative;
@@ -31,6 +27,7 @@
         .scroll-container {
         max-height: 550px;  /* Điều chỉnh chiều cao theo ý muốn */
         overflow-y: auto;   /* Thanh cuộn dọc */
+        width: 100%;
     }
 
     /* Tùy chỉnh giao diện cho các thẻ */
@@ -86,7 +83,7 @@
             <button class="btn btn-success" data-toggle="modal" data-target="#drinkModal">Thêm thức uống</button>
             <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Tìm kiếm</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" style="margin-right: 20px;" type="submit">Tìm kiếm</button>
             </form>
         </div>
 
@@ -243,8 +240,6 @@
 
 
     <!-- Link Bootstrap và jQuery (cần thiết để modal hoạt động) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     $(document).ready(function() {
         // Khi người dùng chọn một file

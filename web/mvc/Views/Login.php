@@ -30,7 +30,45 @@ if ($error) {
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body class="bg-light d-flex justify-content-center align-items-center" style="height: 100vh;">
+<style>
+    body {
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: none;
+        position: relative;
+        overflow: hidden; /* Đảm bảo lớp phủ không vượt ra ngoài */
+    }
+
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('public/images/background/anhnen.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: blur(8px); /* Làm mờ */
+        z-index: -2; /* Đặt nền phía sau nội dung */
+    }
+
+    body::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4); /* Lớp phủ màu tối (đen, 50% trong suốt) */
+        z-index: -1; /* Đặt lớp phủ trên nền mờ nhưng dưới nội dung */
+    }
+</style>
+<body class="bg-light d-flex justify-content-center align-items-center">
 <div class="card p-4 shadow" style="width: 400px;">
     <h2 class="text-center">Đăng nhập</h2>
 
@@ -76,16 +114,16 @@ if ($error) {
             }
     });
 
-    $.ajax({
-        url: './LoginController/checkLogged', // Đường dẫn tới file PHP để kiểm tra trạng thái
-        type: 'GET',
-        success: function(response) {
-            var result = JSON.parse(response);
-            if (result.logged) {
-                window.location.href = result.redirectUrl;
-            }
-        }
-    });
+    // $.ajax({
+    //     url: './LoginController/checkLogged', // Đường dẫn tới file PHP để kiểm tra trạng thái
+    //     type: 'GET',
+    //     success: function(response) {
+    //         var result = JSON.parse(response);
+    //         if (response.logged) {
+    //             window.location.href = response.redirectUrl;
+    //         }
+    //     }
+    // });
 
 
     // Handle form submission via AJAX
