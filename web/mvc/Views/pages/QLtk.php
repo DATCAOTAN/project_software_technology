@@ -55,7 +55,7 @@
         <div class="modal-content">
             <form id="add_account_form">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Account</h1>
+                    <span class="modal-title fs-5 font-weight-bold" id="staticBackdropLabel">Add Account</span>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -70,8 +70,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
-                    <button type="button" onclick="addAccount()" class="btn custom-bg text-secondary shadow-none">SUBMIT</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="addAccount()" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>
@@ -83,7 +83,7 @@
         <form action="" id="edit_account_form" autocomplete="off">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Account</h1>
+                    <span class="modal-title fs-5 font-weight-bold" id="staticBackdropLabel">Edit Account</span>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -99,8 +99,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
-                    <button type="button" onclick="editAccountSubmit()" class="btn custom-bg text-secondary shadow-none">SUBMIT</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="editAccountSubmit()" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </form>

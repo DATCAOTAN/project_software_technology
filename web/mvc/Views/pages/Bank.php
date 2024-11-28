@@ -44,7 +44,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <button class="btn btn-success mb-3 addDetailBtn" id="addDetailBtn<?php echo $method['id']; ?>" data-method-id="<?php echo $method['id']; ?>">Thêm Chi Tiết Thanh Toán</button>
+                <button class="btn btn-primary mb-3 addDetailBtn" id="addDetailBtn<?php echo $method['id']; ?>" data-method-id="<?php echo $method['id']; ?>">Thêm Chi Tiết Thanh Toán</button>
 
                 
                 <!-- Form thêm chi tiết thanh toán -->

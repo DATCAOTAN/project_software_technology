@@ -120,11 +120,11 @@
             <div class="modal-body">
                 <!-- Tên và Mô tả trên cùng một hàng -->
                 <div class="form-row mb-3">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-5 pr-4">
                         <label for="drinkName">Tên</label>
                         <input type="text" class="form-control" id="drinkName" placeholder="Nhập tên thức uống">
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-5 ml-4">
                         <label for="drinkDescription">Mô tả</label>
                         <input type="text" class="form-control" id="drinkDescription" placeholder="Nhập mô tả">
                     </div>

@@ -60,7 +60,7 @@
         <div class="modal-content">
             <form id="add_employee_form">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Staff</h1>
+                    <span class="modal-title fs-5 font-weight-bold" id="staticBackdropLabel">Add Staff</span>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -88,8 +88,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
-                    <button type="button" onclick="addStaff()" class="btn custom-bg text-secondary shadow-none">SUBMIT</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="addStaff()" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>
@@ -101,7 +101,7 @@
         <form action="" id="edit_employee_form" autocomplete="off">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Employee</h1>
+                    <span class="modal-title fs-5 font-weight-bold" id="staticBackdropLabel">Edit Staff</span>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -133,8 +133,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
-                    <button type="button" onclick="editStaffsubmit()" class="btn custom-bg text-secondary shadow-none">SUBMIT</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="editStaffsubmit()" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </form>
