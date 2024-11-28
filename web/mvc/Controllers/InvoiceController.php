@@ -58,8 +58,7 @@ class InvoiceController extends Controller {
             }
         }
 
-        public function completeOrder($hoaDonId) {
-            $id_nhanvien = $_POST['id_nhanvien'];
+        public function completeOrder($hoaDonId,$id_nhanvien) {
             $result = $this->invoiceModel->updateOrderStatus($hoaDonId, "Da xong", $id_nhanvien);
             header('Content-Type: application/json');
             echo json_encode(['success' => $result]);

@@ -49,6 +49,7 @@
 <script>
     let currentPage = 1;
     const itemsPerPage = 5;
+    const id_nhanvien = <?php echo json_encode($_SESSION['user']['userID']); ?>;
 
     // Gọi AJAX để tải dữ liệu
     function loadHoaDons() {
@@ -143,11 +144,9 @@
 
     // Đánh dấu đơn hàng là "Hoàn thành"
     function markAsCompleted(hoaDonId) {
-        const id_nhanvien = <?php $_SESSION['user']['userID'] ?>
         $.ajax({
-            url: `index.php?url=InvoiceController/completeOrder/${hoaDonId}`,
+            url: `index.php?url=InvoiceController/completeOrder/${hoaDonId}/${id_nhanvien}`,
             method: 'POST',
-            data: id_nhanvien,
             success: function (response) {
                 if (response.success) {
                     alert('Đơn hàng đã được hoàn thành.');
@@ -236,6 +235,7 @@
     // Tải dữ liệu ban đầu
     $(document).ready(function () {
         loadHoaDons();
+        setInterval(loadHoaDons, 5000);
     });
 
 </script>

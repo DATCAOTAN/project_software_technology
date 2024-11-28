@@ -166,7 +166,7 @@
                 // Tạo bản ghi hóa đơn mới
                 $sql = "
                     INSERT INTO hoa_don (khach_hang_id, nhan_vien_id, ngay_gio, tong_tien, trang_thai, trang_thai_thanh_toan, phuong_thuc_thanh_toan_id)
-                    VALUES (?, null, NOW(), ?, 'Da dat', TRUE, ?)
+                    VALUES (?, null, NOW(), ?, 'Dang lam', TRUE, ?)
                 ";
                 $stmt = $this->con->prepare($sql);
                 $stmt->bind_param("idi", $khachHangId, $tongTien, $phuongThucThanhToanId);

@@ -672,7 +672,7 @@
 
                 // Gọi hàm loadOrders khi trang tải
                 loadOrders();
-                setInterval(loadOrders, 60000);
+                setInterval(loadOrders, 5000);
             });
             
             function loadOrders() {
@@ -723,8 +723,8 @@
                                         <p><strong>Ngày:</strong> ${order.ngay_gio}</p>
                                         <p><strong>Tổng:</strong> ${order.tong_tien} VND</p>
                                         <p><strong>Trạng thái:</strong> 
-                                            <span style="color: ${order.trang_thai === 'Da xong' ? 'green' : (order.trang_thai === 'Da dat' ? 'red' : 'inherit')}">
-                                                ${order.trang_thai === 'Da dat' ? 'Đang làm' : 'Đã xong'}
+                                            <span style="color: ${order.trang_thai === 'Da xong' ? 'green' : (order.trang_thai === 'Dang lam' ? 'red' : 'inherit')}">
+                                                ${order.trang_thai === 'Dang lam' ? 'Đang làm' : 'Đã xong'}
                                             </span>
                                         </p>
                                         <div class="order-details">
