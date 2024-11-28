@@ -127,6 +127,7 @@
                             </select>
                         </div>
                         <input type="hidden" name="employee_id">
+                        <input type="hidden" name="currentAccount_id">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold" for="account">Tài Khoản Đang sử dụng: <span id="account_name" name="account_name"></span></label>
                         </div>
@@ -205,7 +206,7 @@
             edit_employee_form.elements['name'].value = data.ten;
             edit_employee_form.elements['phone'].value = data.so_dien_thoai;
             edit_employee_form.elements['email'].value = data.email;
-            // edit_employee_form.elements['account'].value = data.tai_khoan_id;
+            edit_employee_form.elements['currentAccount_id'].value = data.tai_khoan_id;
             document.getElementById('account_name').innerHTML = data.tai_khoan_id + "-" + data.ten_tai_khoan;
         }
         xhr.send('get_employee=' + id);
@@ -216,12 +217,7 @@
         var name = edit_employee_form.elements['name'].value;
         var phone = edit_employee_form.elements['phone'].value;
         var email = edit_employee_form.elements['email'].value;
-        var account_id = edit_employee_form.elements['account'].value
-        console.log(name + " " + phone + " " + email + " " + account_id);
-        if (account_id == "") {
-            alert("Vui lòng chọn tài khoản");
-            return;
-        }
+        var account_id = edit_employee_form.elements['account'].value == "" ? edit_employee_form.elements['currentAccount_id'].value : edit_employee_form.elements['account'].value;
 
         var data = new FormData();
         data.append('name', name);

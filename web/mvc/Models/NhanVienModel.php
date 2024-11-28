@@ -57,7 +57,8 @@
         {
             $sql = "INSERT INTO `nhan_vien`(`ten`, `so_dien_thoai`, `email`, `tai_khoan_id`, `Trang_thai`) VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->con->prepare($sql);
-            $stmt->bind_param("ssssi", $name, $phone, $email, $taikhoanId,0);
+            $trangThai = 0;
+            $stmt->bind_param("ssssi", $name, $phone, $email, $taikhoanId, $trangThai);
     
             if ($stmt->execute()) {
                 return true;
