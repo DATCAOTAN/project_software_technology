@@ -28,7 +28,7 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <button type="button" onclick="edit_account(<?= $account['id'] ?>)"
-                                            class="btn btn-warning btn-sm edit-link"
+                                            class="btn btn-warning btn-sm edit-link mr-2"
                                             data-bs-toggle='modal'
                                             data-bs-target='#edit-account'>
                                             <i class="bi bi-pencil"></i> Sửa
