@@ -4,7 +4,7 @@
         // Lấy toàn bộ nhân viên
         public function getAll()
         {
-            $sql = "SELECT * FROM `nhan_vien`";
+            $sql = "SELECT * FROM `nhan_vien` where Trang_thai=False";
             $result = $this->con->query($sql);
     
             if (!$result) {
@@ -37,7 +37,7 @@
 
         public function getAccountIDNotUse()
         {
-            $sql = "SELECT * FROM `tai_khoan` WHERE `id` NOT IN (SELECT `tai_khoan_id` FROM `nhan_vien`)";
+            $sql = "SELECT * FROM `tai_khoan` WHERE `id` NOT IN (SELECT `tai_khoan_id` FROM `nhan_vien`) and id!=1";
             $result = $this->con->query($sql);
     
             if (!$result) {
@@ -83,16 +83,39 @@
         // Xóa nhân viên
         public function deleteEmployee($id)
         {
-            $sql = "DELETE FROM `nhan_vien` WHERE `id` = ?";
+            // Chuyển ID thành kiểu số nguyên để đảm bảo an toàn
+            $id = (int)$id;
+        
+            // Chuẩn bị truy vấn UPDATE để xóa mềm (đặt trạng thái là 1)
+            $sql = "UPDATE `nhan_vien` SET Trang_thai = 1 WHERE `id` = ?";
             $stmt = $this->con->prepare($sql);
+        
+            // Kiểm tra lỗi trong quá trình prepare
+            if (!$stmt) {
+                die("Lỗi chuẩn bị truy vấn: " . $this->con->error);
+            }
+        
+            // Gán giá trị tham số và thực thi câu lệnh
             $stmt->bind_param("i", $id);
-    
+        
             if ($stmt->execute()) {
-                return true;
+                // Kiểm tra số hàng bị ảnh hưởng
+                if ($stmt->affected_rows > 0) {
+                    echo "Xóa nhân viên thành công!";
+                    return true;
+                } else {
+                    // Không tìm thấy nhân viên với ID này
+                    echo "Không tìm thấy nhân viên với ID: " . $id;
+                    return false;
+                }
             } else {
-                die("Delete failed: " . $this->con->error);
+                // Xử lý lỗi trong quá trình thực thi
+                echo "Lỗi xóa nhân viên: " . $stmt->error;
+                return false;
             }
         }
+        
     }
+        
     
 ?>
