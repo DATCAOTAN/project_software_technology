@@ -1,3 +1,9 @@
+<?php
+    if (!isset($_SESSION['user']) || $_SESSION['user']['logged'] !== true) {
+        header("Location: /project_software_technology/web/index.php?controller=LoginController");
+        exit;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,10 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $pageTitle; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
         /* Đảm bảo chiều cao đầy đủ cho body và html */
@@ -19,7 +25,7 @@
 
         /* Đảm bảo chiều cao của container chiếm toàn bộ màn hình */
         .container-fluid {
-            min-height: 100vh;
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
         }
@@ -31,7 +37,7 @@
 
         /* Left Menu */
         .sidebar {
-            min-height: 90vh;
+            min-height: 80vh;
             color: white;
             padding: 20px;
             display: flex;
@@ -40,7 +46,7 @@
 
         /* Main Content */
         .main-content {
-            min-height: 90vh;
+            min-height: 80vh;
             padding: 20px;
             background-color: #f8f9fa;
         }
@@ -60,12 +66,12 @@
 
         <div class="row no-gutters">
             <!-- Left Menu -->
-            <div class="left_menu">
+            <div class="left_menu col-md-2 sidebar">
                 <?php include("inc/left_menu.php");?>
             </div>
 
             <!-- Main Content -->
-            <div class="col-md-9 main-content">
+            <div class="col-md-10 main-content">
                 <?php require_once "./mvc/Views/pages/".$page.".php"; ?>
             </div>
         </div>

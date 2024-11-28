@@ -1,6 +1,6 @@
 <!-- header.php -->
 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-    <a class="navbar-brand text-white" href="#">CNPM's cafe</a>
+    <a class="navbar-brand text-white" href="./ThucuongController">CNPM's cafe</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -13,8 +13,8 @@
                     Tài khoản
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Thông tin cá nhân</a>
-                    <a class="dropdown-item" href="#">Đăng xuất</a>
+                    <!-- <a class="dropdown-item" href="#">Thông tin cá nhân</a> -->
+                    <a class="dropdown-item" href="./LoginController/logout">Đăng xuất</a>
                 </div>
             </li>
         </ul>

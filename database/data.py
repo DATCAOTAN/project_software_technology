@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 conn = mysql.connector.connect(
     host="localhost",     # Thay đổi nếu bạn sử dụng host khác
     user="root",          # Thay đổi nếu bạn có user khác
-    password="123456",  # Thay đổi mật khẩu của bạn
+    password="123456789",  # Thay đổi mật khẩu của bạn
     database="CNPM"
 )
 
@@ -43,9 +43,10 @@ def them_nhan_vien_random():
         ten = fake.name()
         so_dien_thoai = f"092345678{i}"
         email = fake.email()
+        Trang_thai = random.choice([True, False])
     # Giả sử các ID từ 1 đến 10 đã có trong bảng tai_khoan
-        query = "INSERT INTO nhan_vien (ten, so_dien_thoai, email, tai_khoan_id) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query, (ten, so_dien_thoai, email, i))
+        query = "INSERT INTO nhan_vien (ten, so_dien_thoai, email, tai_khoan_id,Trang_thai) VALUES (%s, %s, %s, %s,%s)"
+        cursor.execute(query, (ten, so_dien_thoai, email, i,Trang_thai))
     conn.commit()
 
 # Hàm thêm dữ liệu ngẫu nhiên vào bảng khach_hang
@@ -60,14 +61,16 @@ def them_khach_hang_random():
 
 def them_du_lieu_thuc_uong():
     sizes = ['S', 'M', 'L']
+  
 
     for i in range(1, sl_thucUong+1):
         ten_thuc_uong = f"Thuc uong {i}"
+        Trang_thai = random.choice([True, False])
         mo_ta = f"Mo ta {i}"
         image_url = f"image{i}.jpg"
         cursor.execute(
-            f"INSERT INTO Thuc_uong (Ten_thuc_uong, Mo_ta, image_URL) "
-            f"VALUES ('{ten_thuc_uong}', '{mo_ta}', '{image_url}')"
+            f"INSERT INTO Thuc_uong (Ten_thuc_uong, Mo_ta, image_URL,Trang_thai) "
+            f"VALUES ('{ten_thuc_uong}', '{mo_ta}', '{image_url}',{Trang_thai})"
         )
 
         # Lấy ID của thức uống vừa được chèn
@@ -159,11 +162,10 @@ def chi_tiet_hoa_don_random():
 # Hàm thêm dữ liệu ngẫu nhiên vào bảng phan_hoi
 def them_phan_hoi_random():
     for i in range(1,sl_Hdon):
-        ten_khach_hang = fake.name()
         so_sao = random.randint(1, 5)
         noi_dung = fake.sentence()
-        query = "INSERT INTO phan_hoi (ten_khach_hang, hoa_don_id, so_sao, noi_dung) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query, (ten_khach_hang, i, so_sao, noi_dung))
+        query = "INSERT INTO phan_hoi ( hoa_don_id, so_sao, noi_dung) VALUES ( %s, %s, %s)"
+        cursor.execute(query, ( i, so_sao, noi_dung))
     conn.commit()
 
 # Thêm nhiều dữ liệu ngẫu nhiên
