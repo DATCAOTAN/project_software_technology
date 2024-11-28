@@ -14,6 +14,7 @@
       public function index(){  
          // $leftmenu= $this->showLeftmenu();
          $this->view("master_layout",['page'=>'ThucUong',
+                                    'pageTitle' => 'Quản lý Thức uống',
                                     'ThucUong'=> $this->ThucUong->getAll(),
                                     'ChiTietThucUong'=>$this->ChiTietThucUong->getAll()
                                     // 'view'=>$leftmenu

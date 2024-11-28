@@ -80,10 +80,10 @@
 <body>
         <!-- Header Section với nút Thêm và ô tìm kiếm -->
         <div class="d-flex justify-content-between mb-4">
-            <button class="btn btn-success" data-toggle="modal" data-target="#drinkModal">Thêm thức uống</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#drinkModal">Thêm thức uống</button>
             <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm">
-                <button class="btn btn-outline-success my-2 my-sm-0" style="margin-right: 20px;" type="submit">Tìm kiếm</button>
+                <button class="btn btn-primary my-2 my-sm-0" style="margin-right: 20px;" type="submit">Tìm kiếm</button>
             </form>
         </div>
 

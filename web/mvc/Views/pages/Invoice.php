@@ -33,7 +33,7 @@
             <div class="modal-body">
                 <table class="table table-striped">
                     <thead>
-                        <tr>
+                        <tr class="bg-dark text-light">
                             <th>Tên thức uống</th>
                             <th>Kích cỡ</th>
                             <th>Số lượng</th>

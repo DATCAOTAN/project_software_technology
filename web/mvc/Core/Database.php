@@ -4,7 +4,7 @@ class Database
     public $con;
     protected $hostname = "localhost";
     protected $username = "root";
-    protected $password = "123456";
+    protected $password = "";
     protected $dbname = "cnpm";
 
     function __construct(){

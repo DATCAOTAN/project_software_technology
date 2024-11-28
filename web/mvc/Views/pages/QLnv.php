@@ -4,8 +4,8 @@
             <h3 class="mb-4 text-center">Quản lý nhân viên</h3> <!-- Thêm text-center -->
 
             <div class="text-end mb-4">
-                <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#add-employee">
-                    <i class="bi bi-plus-square"></i> Add
+                <button type="button" class="btn btn-primary shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#add-employee">
+                    <i class="bi bi-plus-square"></i> Thêm nhân viên
                 </button>
             </div>
 

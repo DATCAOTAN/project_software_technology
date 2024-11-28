@@ -1,11 +1,12 @@
 <?php
-    if (!isset($_SESSION['user']) || $_SESSION['user']['logged'] !== true) {
-        header("Location: /project_software_technology/web/index.php?controller=LoginController");
-        exit;
-    }
+if (!isset($_SESSION['user']) || $_SESSION['user']['logged'] !== true) {
+    header("Location: /project_software_technology/web/index.php?controller=LoginController");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +19,8 @@
 
     <style>
         /* Đảm bảo chiều cao đầy đủ cho body và html */
-        html, body {
+        html,
+        body {
             height: 100%;
             margin: 0;
         }
@@ -55,8 +57,34 @@
         .card {
             margin-top: 20px;
         }
+
+        .sidebar .nav-link {
+            transition: background-color 0.3s ease, color 0.3s ease;
+            /* Hiệu ứng chuyển đổi mượt */
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #f1f1f1;
+            /* Màu nền khi hover */
+            color: #007bff;
+            /* Màu chữ khi hover */
+            text-decoration: none;
+            /* Không gạch chân */
+        }
+
+        .sidebar .nav-link.active {
+            font-weight: bold;
+            /* Làm đậm chữ */
+            color: #007bff;
+            /* Màu xanh đậm hoặc tùy chọn */
+            background-color: #f8f9fa;
+            /* Nền sáng hơn */
+            border-left: 4px solid #007bff;
+            /* Đường kẻ bên trái */
+        }
     </style>
 </head>
+
 <body class="bg-light">
     <div class="container-fluid p-0">
         <!-- Header -->
@@ -67,14 +95,28 @@
         <div class="row no-gutters">
             <!-- Left Menu -->
             <div class="left_menu col-md-2 sidebar">
-                <?php include("inc/left_menu.php");?>
+                <?php include("inc/left_menu.php"); ?>
             </div>
 
             <!-- Main Content -->
             <div class="col-md-10 main-content">
-                <?php require_once "./mvc/Views/pages/".$page.".php"; ?>
+                <?php require_once "./mvc/Views/pages/" . $page . ".php"; ?>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const links = document.querySelectorAll(".sidebar .nav-link");
+            const currentUrl = window.location.pathname;
+
+            links.forEach(link => {
+                if (link.getAttribute("href") === currentUrl) {
+                    link.classList.add("active");
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>

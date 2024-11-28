@@ -8,9 +8,10 @@
 <body>
 <div class="container mt-5">
     <h2 class="mb-4">Danh Sách Phương Thức Thanh Toán</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
+    <div class="table-responsive-md mx-auto" style="height: 450px; overflow-y: scroll; max-width: 1200px;">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="sticky-top">
+            <tr class="bg-dark text-light">
                 <th>ID</th>
                 <th>Tên Phương Thức</th>
                 <th>Hành Động</th>
@@ -28,6 +29,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <!-- Modal chi tiết -->

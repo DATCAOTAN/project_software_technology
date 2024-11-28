@@ -4,8 +4,8 @@
             <h3 class="mb-4 text-center">Quản lý tài khoản</h3> <!-- Thêm text-center -->
 
             <div class="text-end mb-4">
-                <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#add-account">
-                    <i class="bi bi-plus-square"></i> Add
+                <button type="button" class="btn btn-primary shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#add-account">
+                    <i class="bi bi-plus-square"></i> Thêm tài khoản
                 </button>
             </div>
 
