@@ -4,7 +4,7 @@ class FeedbackModel extends Database
     // Lấy tất cả phản hồi
     public function getAllFeedback()
     {
-        $sql = "SELECT * FROM phan_hoi";
+        $sql = "SELECT * FROM phan_hoi ORDER BY ngay_gio DESC";
         $result = $this->con->query($sql);
         $feedbackList = [];
         while ($row = $result->fetch_assoc()) {
