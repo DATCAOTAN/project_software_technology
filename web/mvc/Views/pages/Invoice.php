@@ -143,9 +143,11 @@
 
     // Đánh dấu đơn hàng là "Hoàn thành"
     function markAsCompleted(hoaDonId) {
+        const id_nhanvien = <?php $_SESSION['user']['userID'] ?>
         $.ajax({
             url: `index.php?url=InvoiceController/completeOrder/${hoaDonId}`,
             method: 'POST',
+            data: id_nhanvien,
             success: function (response) {
                 if (response.success) {
                     alert('Đơn hàng đã được hoàn thành.');

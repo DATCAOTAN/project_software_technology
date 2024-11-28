@@ -38,9 +38,9 @@ class InvoiceModel extends Database{
     }
 
 
-    public function updateOrderStatus($hoaDonId, $newStatus) {
-        $stmt = $this->con->prepare("UPDATE hoa_don SET trang_thai = ? WHERE id = ?");
-        $stmt->bind_param("si", $newStatus, $hoaDonId);
+    public function updateOrderStatus($hoaDonId, $newStatus, $id_nhanvien) {
+        $stmt = $this->con->prepare("UPDATE hoa_don SET trang_thai = ?, nhan_vien_id = ? WHERE id = ?");
+        $stmt->bind_param("sii", $newStatus, $id_nhanvien, $hoaDonId);
         $stmt->execute();
         return $stmt->affected_rows > 0;
     }
