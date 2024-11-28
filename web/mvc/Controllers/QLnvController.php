@@ -113,13 +113,26 @@
      }
      
      public function deleteEmployee() {
-         $id = $_POST['id'];
-         $result = $this->NhanVienModel->deleteEmployee($id);
-         if ($result) {
-             echo json_encode(['status' => 'success', 'message' => 'Xóa thành công!']);
-         } else {
-             echo json_encode(['status' => 'error', 'message' => 'Xóa thất bại.']);
-         }
-     }
-   }
+        // Gọi model để xóa nhân viên
+        // Tránh các lệnh echo không cần thiết
+        header('Content-Type: application/json');
+       
+
+    $id = $_POST['id'];
+
+$result = $this->NhanVienModel->deleteEmployee($id);
+
+if ($result) {
+    echo json_encode(['status' => 'success']);
+    return;
+} else {
+    echo json_encode(['status' => 'error']);
+    return;
+}
+exit;  // Kết thúc ngay sau khi gửi JSON
+
+
+
+    
+   }}
 ?>

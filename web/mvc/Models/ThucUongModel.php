@@ -2,7 +2,7 @@
 class ThucUongModel extends Database
 {
     public function getAll() {
-        $sql = "SELECT * FROM thuc_uong";
+        $sql = "SELECT * FROM thuc_uong where Trang_thai=False";
         $stmt = $this->con->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -105,21 +105,27 @@ $stmt3->execute();
     }
     public function delete($ID) {
         $ID = (int)$ID; // Chuyển ID thành kiểu số nguyên để đảm bảo an toàn
-        $imagePath = 'public/images/thuc_uong/' . 'image'.$ID.'.jpg';
-        if (file_exists($imagePath)) {
-            unlink($imagePath); // Xóa file ảnh từ thư mục
-        }
-        // Xóa chi tiết thức uống liên quan trong bảng Chi_tiet_thuc_uong
-        $sql_chitiet = "DELETE FROM Chi_tiet_thuc_uong WHERE Thuc_uong_ID = ?";
-        $stmt_chitiet = $this->con->prepare($sql_chitiet);
-        $stmt_chitiet->bind_param("i", $ID);
-        $stmt_chitiet->execute();
+        // $imagePath = 'public/images/thuc_uong/' . 'image'.$ID.'.jpg';
+        // if (file_exists($imagePath)) {
+        //     unlink($imagePath); // Xóa file ảnh từ thư mục
+        // }
+        // // Xóa chi tiết thức uống liên quan trong bảng Chi_tiet_thuc_uong
+        // $sql_chitiet = "DELETE FROM Chi_tiet_thuc_uong WHERE Thuc_uong_ID = ?";
+        // $stmt_chitiet = $this->con->prepare($sql_chitiet);
+        // $stmt_chitiet->bind_param("i", $ID);
+        // $stmt_chitiet->execute();
     
-        // Xóa thức uống trong bảng Thuc_uong
-        $sql_thucuong = "DELETE FROM Thuc_uong WHERE ID = ?";
+        // // Xóa thức uống trong bảng Thuc_uong
+        // $sql_thucuong = "UPDATE Thuc_uong SET Ten_thuc_uong = ?, Mo_ta = ? WHERE ID = ?";
+        // $stmt_thucuong = $this->con->prepare($sql_thucuong);
+        // $stmt_thucuong->bind_param("i", $ID);
+        // $stmt_thucuong->execute();
+
+        $sql_thucuong = "UPDATE Thuc_uong SET Trang_thai=True WHERE ID = ?";
         $stmt_thucuong = $this->con->prepare($sql_thucuong);
         $stmt_thucuong->bind_param("i", $ID);
         $stmt_thucuong->execute();
+    
     
         // Kiểm tra kết quả
         if ($stmt_thucuong->affected_rows > 0) {

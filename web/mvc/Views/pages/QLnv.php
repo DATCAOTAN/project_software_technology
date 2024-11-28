@@ -252,22 +252,53 @@
     }
 
     function deleteEmployee(id) {
-        if (confirm("Bạn có chắc chắn muốn xóa?")) {
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", "QlnvController/deleteEmployee", true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-            xhr.onload = function() {
-                let response = JSON.parse(this.responseText);
-                if (response.status == "success") {
-                    alert(response.message);
-                    // Reload trang hoặc cập nhật giao diện sau khi xóa
-                } else {
-                    alert(response.message);
-                }
-                location.reload();
-            }
-            xhr.send('id=' + id);
-        }
+    // Kiểm tra id hợp lệ
+    if (!id || isNaN(id)) {
+        alert("ID không hợp lệ!");
+        return;
     }
+
+    if (confirm("Bạn có chắc chắn muốn xóa nhân viên này?")) {
+        console.log("ID cần xóa:", id); // Log ID để kiểm tra
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "./QLnvController/deleteEmployee/", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        // Hiển thị thông báo xử lý (có thể thêm spinner hoặc disable nút xóa)
+        console.log("Đang gửi yêu cầu xóa...");
+
+        xhr.onload = function() {
+    console.log("Response từ server:", xhr.responseText); // Kiểm tra phản hồi
+
+    try {
+        // Tìm JSON trong phản hồi (loại bỏ văn bản thừa)
+        let jsonResponse = xhr.responseText.match(/\{.*\}/s); // Tìm JSON bằng regex
+        
+        if (jsonResponse) {
+            let response = JSON.parse(jsonResponse[0]); // Parse JSON đã làm sạch
+            
+            // Kiểm tra trạng thái
+            if (response.status === "success") {
+                alert(response.message || "Xóa thành công!");
+                location.reload();  // Tải lại trang hoặc cập nhật giao diện
+            } else {
+                alert(response.message || "Xóa thất bại. Vui lòng thử lại.");
+            }
+        } else {
+            throw new Error("Không tìm thấy JSON hợp lệ trong phản hồi.");
+        }
+    } catch (error) {
+        console.error("Lỗi parse JSON:", error, "Raw response:", xhr.responseText);
+        alert("Phản hồi không hợp lệ từ server. Vui lòng thử lại.");
+    }
+};
+xhr.send('id=' + id);
+
+}
+    }
+
+
+
+
 </script>
