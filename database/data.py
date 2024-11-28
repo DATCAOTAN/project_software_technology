@@ -61,10 +61,11 @@ def them_khach_hang_random():
 
 def them_du_lieu_thuc_uong():
     sizes = ['S', 'M', 'L']
-    Trang_thai = random.choice([True, False])
+  
 
     for i in range(1, sl_thucUong+1):
         ten_thuc_uong = f"Thuc uong {i}"
+        Trang_thai = random.choice([True, False])
         mo_ta = f"Mo ta {i}"
         image_url = f"image{i}.jpg"
         cursor.execute(
