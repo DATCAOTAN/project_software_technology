@@ -65,7 +65,7 @@ CREATE TABLE chi_tiet_phuong_thuc_thanh_toan (
 CREATE TABLE hoa_don (
     id INT AUTO_INCREMENT PRIMARY KEY,
     khach_hang_id INT,
-    nhan_vien_id INT,
+    nhan_vien_id INT NULL,
     ngay_gio DATETIME NOT NULL,
     tong_tien FLOAT NOT NULL,
     trang_thai VARCHAR(50),

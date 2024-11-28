@@ -98,6 +98,13 @@
             .remove-btn:hover {
                 background-color: #c82333;
             }
+            .centered {
+                text-align: center;       /* Căn giữa ngang */
+                line-height: 55px;       /* Dòng chữ nằm giữa theo chiều dọc */
+                height: 60px;            /* Chiều cao của thẻ p */
+                margin: 0;                /* Loại bỏ khoảng cách mặc định */
+                border: 1px solid #ddd;   /* Tùy chọn để hiển thị rõ khung */
+            }
 
             /* Điều chỉnh layout cho các màn hình nhỏ */
             @media (max-width: 768px) {
@@ -141,7 +148,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-6">
                     <h4>Giỏ hàng (0)</h4>
                     <div class="cart-summary border">
-                        <p>No items in cart</p>
+                        <p class="centered">Không có sản phẩm trong giỏ hàng</p>
                     </div>
                     <div class="mt-3">
                         <h5>Total: 0 VND</h5>
@@ -688,7 +695,7 @@
                                 `);
                             });
                         } else {
-                            ordersList.append('<div class="alert alert-warning">No orders found.</div>');
+                            ordersList.append('<div>Bạn chưa mua gì cả.</div>');
                         }
                     },
                     error: function () {
@@ -705,7 +712,7 @@
                 totalPrice = 0;
 
                 if (cart.length === 0) {
-                    cartSummary.innerHTML = '<p>No items in cart</p>';
+                    cartSummary.innerHTML = '<p class="centered">Không có sản phẩm trong giỏ hàng</p>';
                     cartTitle.textContent = 'Giỏ hàng (0)';
                     totalPriceElement.textContent = 'Total: 0 VND';
                     return;
