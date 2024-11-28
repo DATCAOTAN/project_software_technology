@@ -128,7 +128,11 @@
         </style>
     </head>
     <body>
-    
+        <div style="position: absolute; top: 6px; left: 30px; z-index: 10;">
+            <button class="btn" onclick="history.back()">
+                <i class="bi bi-caret-left-fill fs-1"></i>
+            </button>
+        </div>
         <div class="container mt-4">
             <div class="row">
                     <!-- Menu -->
