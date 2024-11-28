@@ -32,7 +32,6 @@
         /* Left Menu */
         .sidebar {
             min-height: 90vh;
-            background-color: #343a40;
             color: white;
             padding: 20px;
             display: flex;

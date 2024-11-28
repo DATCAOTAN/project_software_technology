@@ -22,7 +22,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="http://localhost/project_software_technology/web/ThucUongController" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="ThucUongController" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-coffee mr-2"></i>
                     Thức uống
@@ -31,7 +31,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="#" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="BankController" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-credit-card mr-2"></i>
                     Phương thức thanh toán
@@ -40,7 +40,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="#" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="InvoiceController" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-box mr-2"></i>
                     Đơn hàng
@@ -49,7 +49,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" href="#" style="display: flex; justify-content: space-between; align-items: center;">
+            <a class="nav-link text-dark" href="FeedbackController" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <i class="fas fa-comments mr-2"></i>
                     Xem phản hồi

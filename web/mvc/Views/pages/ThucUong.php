@@ -81,7 +81,6 @@
     </style>
 </head>
 <body>
-    <div class="container mt-4  col-md-12">
         <!-- Header Section với nút Thêm và ô tìm kiếm -->
         <div class="d-flex justify-content-between mb-4">
             <button class="btn btn-success" data-toggle="modal" data-target="#drinkModal">Thêm thức uống</button>
@@ -110,7 +109,6 @@
                 </div>
             <?php endforeach; ?>
         </div>
-    </div>
 
 <!-- Modal -->
 <div class="modal fade" id="drinkModal" tabindex="-1" role="dialog" aria-labelledby="drinkModalLabel" aria-hidden="true">
