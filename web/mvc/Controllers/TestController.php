@@ -5,7 +5,7 @@
          $this->Homemodel = $this->model("HomeModel");
       }
       public function index(){  
-         $this->view("master_layout",['page'=>'test',
+         $this->view("master_layout",['page'=>'Test',
                                     'pageTitle'=>'Coffee shop'
          ]);
       }

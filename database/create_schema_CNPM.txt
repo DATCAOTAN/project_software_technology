@@ -92,8 +92,9 @@ CREATE TABLE chi_tiet_hoa_don (
 -- Tạo bảng phan_hoi
 CREATE TABLE phan_hoi (
     id INT AUTO_INCREMENT PRIMARY KEY,  
+    ten_khach_hang VARCHAR(255),
     hoa_don_id INT UNIQUE,              
-    so_sao INT,                        
+    so_sao INT CHECK(so_sao BETWEEN 1 AND 5),
     noi_dung VARCHAR(255),              
     ngay_gio DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,  
     FOREIGN KEY (hoa_don_id) REFERENCES hoa_don(id)  

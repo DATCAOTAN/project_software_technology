@@ -31,7 +31,7 @@
 
         /* Left Menu */
         .sidebar {
-            min-height: 100vh;
+            min-height: 90vh;
             background-color: #343a40;
             color: white;
             padding: 20px;
@@ -41,7 +41,7 @@
 
         /* Main Content */
         .main-content {
-            min-height: 100vh;
+            min-height: 90vh;
             padding: 20px;
             background-color: #f8f9fa;
         }
