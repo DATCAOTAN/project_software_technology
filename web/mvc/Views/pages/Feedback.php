@@ -28,6 +28,40 @@
 <div class="container mt-4">
     <h2 class="mb-4">Customer Feedback</h2>
 
+    
+
+    <div class="row">
+        <!-- Cột danh sách phản hồi -->
+        <div class="col-lg-8">
+            <div id="feedback-list" class="list-group">
+                <!-- Danh sách phản hồi sẽ được cập nhật thông qua AJAX -->
+            </div>
+
+            <!-- Phần phân trang -->
+            <nav aria-label="Page navigation" class="mt-3">
+                <ul class="pagination justify-content-center" id="pagination">
+                    <!-- Các trang sẽ được cập nhật thông qua AJAX -->
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Cột thống kê -->
+        <div class="col-lg-4">
+            <div class="card" style="margin-top: 0;">
+                <div class="card-header text-center bg-primary text-white">Feedback Summary</div>
+                <div class="card-body">
+                    <p class="mb-2"><strong>Total Feedback:</strong> <span id="totalFeedback">0</span></p>
+                    <p class="mb-2">
+                        <strong>Average Rating:</strong>
+                        <span id="averageStars">☆☆☆☆☆</span> 
+                        <small>(<span id="averageRating">0.0</span> / 5)</small>
+                    </p>
+                    <p class="mb-2"><strong>Positive Feedback:</strong> <span id="positiveFeedback">0</span></p>
+                    <p class="mb-2"><strong>Negative Feedback:</strong> <span id="negativeFeedback">0</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Form viết phản hồi -->
     <form id="feedback-form" class="mb-4" style="border:solid 1px #d5d5d5; padding: 10px">
 
@@ -64,39 +98,6 @@
             <button type="submit" class="btn btn-primary">Submit Feedback</button>
         </div>
     </form>
-
-    <div class="row">
-        <!-- Cột danh sách phản hồi -->
-        <div class="col-lg-8">
-            <div id="feedback-list" class="list-group">
-                <!-- Danh sách phản hồi sẽ được cập nhật thông qua AJAX -->
-            </div>
-
-            <!-- Phần phân trang -->
-            <nav aria-label="Page navigation" class="mt-3">
-                <ul class="pagination justify-content-center" id="pagination">
-                    <!-- Các trang sẽ được cập nhật thông qua AJAX -->
-                </ul>
-            </nav>
-        </div>
-
-        <!-- Cột thống kê -->
-        <div class="col-lg-4">
-            <div class="card" style="margin-top: 0;">
-                <div class="card-header text-center bg-primary text-white">Feedback Summary</div>
-                <div class="card-body">
-                    <p class="mb-2"><strong>Total Feedback:</strong> <span id="totalFeedback">0</span></p>
-                    <p class="mb-2">
-                        <strong>Average Rating:</strong>
-                        <span id="averageStars">☆☆☆☆☆</span> 
-                        <small>(<span id="averageRating">0.0</span> / 5)</small>
-                    </p>
-                    <p class="mb-2"><strong>Positive Feedback:</strong> <span id="positiveFeedback">0</span></p>
-                    <p class="mb-2"><strong>Negative Feedback:</strong> <span id="negativeFeedback">0</span></p>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 
