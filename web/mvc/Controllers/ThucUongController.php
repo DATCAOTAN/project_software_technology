@@ -15,6 +15,7 @@
          // $leftmenu= $this->showLeftmenu();
          $this->view("master_layout",['page'=>'ThucUong',
                                     'ThucUong'=> $this->ThucUong->getAll(),
+                                    'pageTitle'=>'Coffee shop',
                                     'ChiTietThucUong'=>$this->ChiTietThucUong->getAll()
                                     // 'view'=>$leftmenu
          ]);
@@ -33,7 +34,6 @@
       }
       public function add() {
          if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-             // Lấy dữ liệu từ POST
              $name = $_POST['name'] ?? null;
              $description = $_POST['description'] ?? null;
              $sizeSPrice = $_POST['sizeSPrice'] ?? null;
@@ -74,22 +74,22 @@
                  'Trang_thai_ban_M' => $sizeMStatus,
                  'Trang_thai_ban_L' => $sizeLStatus
              ];
+          
      
              // Giả sử $thucUongModel là model thao tác với DB
            
              $drinkId = $this->ThucUong->add($drinkData);  // Phương thức add trả về ID của thức uống vừa thêm
-     
              if ($drinkId<1) {
                  echo json_encode(['success' => false, 'message' => 'hello']);
                  return;
                 
+                 
              }
-     
+
              // Bước 2: Xử lý ảnh (nếu có)
+             header('Content-Type: application/json');
              $imageUrl = '';
              if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                echo json_encode(['success' => false, 'message' => 'LOLOLO ']);
-                 return;
                  $imageTmp = $_FILES['image']['tmp_name'];
                  $imageName = $_FILES['image']['name'];
                  $imageExt = pathinfo($imageName, PATHINFO_EXTENSION);
@@ -105,6 +105,8 @@
                  $imageNameNew = "image" . $drinkId .'.'. $imageExt;
                  $uploadDir = 'public/images/thuc_uong/';  // Đảm bảo thư mục này tồn tại và có quyền ghi
                  $imageUrl = $uploadDir . $imageNameNew;
+                
+     
      
                  // Di chuyển tệp ảnh vào thư mục
                  if (!move_uploaded_file($imageTmp, $imageUrl)) {
@@ -112,13 +114,13 @@
                      return;
                  }
                  else{
-                  echo json_encode(['success' => True, 'message' => 'Thêm thành công']);
+                  echo json_encode(['success' => True, 'message' => 'Thêm thành công','data'=> $this->ThucUong->getAll()]);
                      return;
                  }
              }
              else 
              {
-               echo json_encode(['success' => false, 'message' => 'cai dcmmm ']);
+               echo json_encode(['success' => True, 'message' => 'Phai them anh','data'=> $this->ThucUong->getAll()]);
                  return;
              }
           
@@ -137,7 +139,7 @@
             return;
         }
         header('Content-Type: application/json');
-        echo json_encode($flag);
+        echo json_encode( $this->ThucUong->getAll());
 
      }
 
@@ -196,6 +198,7 @@
                 $imageName = $_FILES['image']['name'];
                 $imageExt = pathinfo($imageName, PATHINFO_EXTENSION);
                 $check=true;
+             
     
                 // Kiểm tra loại file ảnh
                 $allowedExts = ['jpg', 'jpeg', 'png', 'gif'];
@@ -208,7 +211,15 @@
                 $imageNameNew = "image" . $ID .'.jpg';
                 $uploadDir = 'public/images/thuc_uong/';  // Đảm bảo thư mục này tồn tại và có quyền ghi
                 $imageUrl = $uploadDir . $imageNameNew;
-                unlink($imageUrl); 
+
+
+                // Kiểm tra xem tệp có tồn tại không
+                if (file_exists($imageUrl)) {
+                    // Xóa tệp
+                    unlink($imageUrl);
+                        
+                }
+     
     
                 // Di chuyển tệp ảnh vào thư mục
                 if (!move_uploaded_file($imageTmp, $imageUrl)) {
@@ -216,11 +227,18 @@
                     return;
                 }
                 else{
-                    $flag = $this->ThucUong->edit($ID,$drinkData,$check);
-                  
-                        echo json_encode(['success' => True, 'message' => 'Sửa thành công']);
-                        return;
                     
+                    $flag = $this->ThucUong->edit($ID,$drinkData,$check);
+                   $data=$this->ThucUong->getAll();
+                   header('Content-Type: application/json');
+            if ($flag) {
+                echo json_encode(['success' => True, 'message' => 'Sửa thành công','data'=>$data]);
+                return;
+            }
+            else{
+                echo json_encode(['success' => True, 'message' => 'Sửa ảnh thành công','data'=>$data]);
+                return;
+            }
                 }
             }
             else 
@@ -228,7 +246,7 @@
              
             $flag = $this->ThucUong->edit($ID,$drinkData,$check);
             if ($flag) {
-                echo json_encode(['success' => True, 'message' => 'Sửa thành công']);
+                echo json_encode(['success' => True, 'message' => 'Sửa thành công','data'=>$data]);
                 return;
             }
             else{

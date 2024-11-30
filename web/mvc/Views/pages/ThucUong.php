@@ -89,22 +89,7 @@
 
         <!-- Hiển thị danh sách thức uống -->
         <div class="row scroll-container">
-            <?php foreach ($ThucUong as $item): ?>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card h-100 position-relative overflow-hidden text-center">
-                        <img src="<?php echo 'public/images/thuc_uong/' . $item['image_URL']; ?>" class="card-img-top" alt="<?php echo $item['Ten_thuc_uong']; ?>">
-                        <!-- Biểu tượng sửa và xóa -->
-                        <div class="card-icons">
-                            <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
-                            <button class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></button>
-                        </div>
-                        <!-- Tên thức uống dưới hình -->
-                        <div class="card-footer bg-white border-0">
-                            <h5 class="card-title"><?php echo $item['Ten_thuc_uong']; ?></h5>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
+            
         </div>
 
 <!-- Modal -->
@@ -240,7 +225,17 @@
 
 
     <!-- Link Bootstrap và jQuery (cần thiết để modal hoạt động) -->
-    <script>
+
+<script>
+$(document).ready(function() {
+
+
+    var flag=0;
+    var imageNumber,imageUrl,target,card
+
+
+
+
     $(document).ready(function() {
         // Khi người dùng chọn một file
         $('#drinkImage').change(function(event) {
@@ -249,6 +244,7 @@
                 // Đọc và hiển thị hình ảnh chọn
                 var reader = new FileReader();
                 reader.onload = function(e) {
+                    target=e.target.result   
                     $('#previewImage').attr('src', e.target.result).show();  // Hiển thị hình ảnh
                 };
                 reader.readAsDataURL(file);
@@ -258,21 +254,15 @@
             }
         });
     });
-</script>
-<script>
-$(document).ready(function() {
-
-
-    var flag=0;
-    var imageNumber,imageUrl;
     // Xử lý khi click vào card
-    $('.card').click(function() {
+   
+    $(document).on('click', '.card', function() {
         // Lấy thông tin từ card
         const drinkName = $(this).find('.card-title').text();
         imageUrl = $(this).find('.card-img-top').attr('src');
         const imageName = imageUrl.split('/').pop();  
          imageNumber = parseInt(imageName.match(/\d+/)[0]) 
-        chi_tiet(imageNumber)
+        chi_tiet()
         // Đưa dữ liệu vào modal
         $('#drinkModalLabel').text('Chi tiết Thức Uống'); // Đổi tiêu đề modal
         $('#drinkName').val(drinkName).prop('readonly', true); // Tên không sửa được
@@ -305,8 +295,9 @@ $(document).ready(function() {
 
     
 });
+
  
-$('.btn-primary').click(function() {
+$(document).on('click', '.btn-primary', function() {
     // Đặt lại tất cả các trường trong form chính của modal
     var formData = new FormData();
 formData.append('name', $('#drinkName').val());
@@ -331,13 +322,13 @@ $.ajax({
         console.log(response.success);
         if (response.success) {
             alert('Thêm thành công');
-            location.reload();
+            loadScrollContainer(response.data)
         } else {
             alert(response.message || 'Có lỗi xảy ra!');
         }
     },
     error: function () {
-        alert('Không thể thêm thức uống. Vui lòng thử lại sau!');
+        alert('Không thể thêm thức uống,Tên bị trùng !');
     }
 });
   }
@@ -354,7 +345,7 @@ $.ajax({
         console.log(response.success);
         if (response.success) {
             alert('Sửa thành công');
-            chi_tiet()
+             loadScrollContainer(response.data)
             
         } else {
             alert(response.message || 'Có lỗi xảy ra!');
@@ -394,7 +385,8 @@ function resetDrinkForm() {
 }
 
     // Sự kiện khi click vào nút xóa
-    $('.btn-outline-danger').click(function(event) {
+
+    $(document).on('click', '.btn-outline-danger', function(event){
         event.stopPropagation();  // Ngăn chặn sự kiện click vào card
         const drinkName = $(this).closest('.card').find('.card-title').text();
         if (confirm(`Bạn có chắc chắn muốn xóa thức uống "${drinkName}" không?`)) {
@@ -410,7 +402,8 @@ function resetDrinkForm() {
         dataType: 'json',
         success: function(data) {
             alert(`Đã xóa thức uống: ${drinkName}`);
-            card.remove();
+            loadScrollContainer(data)
+          
     },
     error: function(xhr, status, error) {
         console.error('Lỗi:', status, error);
@@ -421,8 +414,8 @@ function resetDrinkForm() {
           
         }
     });
-    // Sự kiện khi click vào nút chỉnh sửa
-    $('.btn-outline-primary').click(function(event) {
+
+    $(document).on('click', '.btn-outline-primary', function(event) {
         event.stopPropagation();  // Ngăn chặn sự kiện click vào card
         flag=0
         $('#drinkName').prop('readonly', false); // Tên không sửa được
@@ -430,25 +423,23 @@ function resetDrinkForm() {
         $('#sizeSPrice, #sizeMPrice, #sizeLPrice').prop('readonly', false); // Giá không sửa được
         $('#sizeSStatus, #sizeMStatus, #sizeLStatus').prop('disabled', false); // Trạng thái không thay đổi
         $('#drinkImage').prop('disabled', false); // Tắt chọn hình ảnh
-        const card = $(this).closest('.card');
+        card = $(this).closest('.card');
         const drinkName = card.find('.card-title').text();
         imageUrl = card.find('.card-img-top').attr('src');
         const imageName = imageUrl.split('/').pop();  // 'image1.jpg'
          imageNumber = parseInt(imageName.match(/\d+/)[0])  // Lấy số '1'
-        console.log(imageNumber);
-
         chi_tiet()
-
+        $('#previewImage').attr('src', imageUrl);
         // Đưa dữ liệu vào modal chỉnh sửa
         $('#drinkModalLabel').text('Chỉnh Sửa Thức Uống');  // Đổi tiêu đề modal
         $('.btn-primary').text('Sửa').show();
-        
         // Mở modal
         $('#drinkModal').modal('show');
     });
 
     function chi_tiet()
     {  
+        console.log(imageUrl)
        var mo_ta = '';
        var ten_thuc_uong='';
         $.ajax({
@@ -462,7 +453,7 @@ function resetDrinkForm() {
         console.log( mo_ta);
         $('#drinkDescription').val(mo_ta)
         $('#drinkName').val(ten_thuc_uong)
-        $('#previewImage').attr('src', imageUrl);
+        
         $.each(data, function(index, thuc_uong){
            if(thuc_uong.Size=="S"){
             $('#sizeSPrice').val(thuc_uong.Gia_tien)
@@ -492,6 +483,33 @@ function resetDrinkForm() {
         
         });
     }
+
+
+    function loadScrollContainer(data) {
+    $('.scroll-container').empty(); // Xóa nội dung cũ
+    
+    data.forEach(function(item) {
+        // Tạo HTML mới cho từng item và thêm vào container
+        const cardHtml = `
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100 position-relative overflow-hidden text-center">
+                    <img src="public/images/thuc_uong/${item.image_URL}" class="card-img-top" alt="${item.Ten_thuc_uong}">
+                    <div class="card-icons">
+                        <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                        <button class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></button>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <h5 class="card-title">${item.Ten_thuc_uong}</h5>
+                    </div>
+                </div>
+            </div>`;
+        
+        $('.scroll-container').append(cardHtml); // Thêm HTML mới vào container
+    });
+}
+const data = <?php echo json_encode($ThucUong); ?>;
+loadScrollContainer(data)
+
 });
 
 

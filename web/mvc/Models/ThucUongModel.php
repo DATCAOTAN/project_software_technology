@@ -51,58 +51,43 @@ class ThucUongModel extends Database
     }
 
     public function add($thucuong) {
-        // Thêm thức uống vào bảng Thuc_uong
-        $sql = "INSERT INTO Thuc_uong (Ten_thuc_uong, Mo_ta, image_URL) VALUES (?, ?, ?)";
-        $stmt = $this->con->prepare($sql);
-        $stmt->bind_param("sss", $thucuong['Ten_thuc_uong'], $thucuong['Mo_ta'], $thucuong['image_URL']);
-        $stmt->execute();
-        
-        // Lấy ID của thức uống mới thêm
-        $new_id = $this->con->insert_id;
+        // Bắt đầu transa
+            $sql = "INSERT INTO Thuc_uong (Ten_thuc_uong, Mo_ta, Trang_thai, image_URL) VALUES (?, ?, ?, ?)";
+            $stmt = $this->con->prepare($sql);
+            $Trang_thai = 0;
+            $stmt->bind_param("ssis", $thucuong['Ten_thuc_uong'], $thucuong['Mo_ta'], $Trang_thai, $thucuong['image_URL']);
+            $stmt->execute();
     
-        // Tạo tên file hình ảnh
-        $image_URL = "image" . $new_id . ".jpg";  // Sửa chỗ thiếu dấu . trước ".jpg"
+            // Lấy ID của thức uống mới thêm
+            $new_id = $this->con->insert_id;
     
-        // Cập nhật URL hình ảnh vào bảng Thuc_uong
-        $stmt2 = $this->con->prepare("UPDATE Thuc_uong SET image_URL = ? WHERE ID = ?");
-        $stmt2->bind_param("si", $image_URL, $new_id);
-        $stmt2->execute();
+            // Tạo tên file hình ảnh và cập nhật
+            $image_URL = "image" . $new_id . ".jpg";
+            $stmt2 = $this->con->prepare("UPDATE Thuc_uong SET image_URL = ? WHERE ID = ?");
+            $stmt2->bind_param("si", $image_URL, $new_id);
+            $stmt2->execute();
     
-        // Thêm chi tiết vào bảng Chi_tiet_thuc_uong
-        // Thêm chi tiết vào bảng Chi_tiet_thuc_uong
-$sql2 = "INSERT INTO Chi_tiet_thuc_uong (Thuc_uong_ID, Size, Gia_tien, Trang_thai_ban)
-VALUES (?, ?, ?, ?)";
-$stmt3 = $this->con->prepare($sql2);
-
-// Khai báo các biến cho từng size
-$sizeS = "S";
-$gia_tien_S = $thucuong['Gia_tien_S'];
-$trang_thai_S = $thucuong['Trang_thai_ban_S'];
-
-// Thêm dữ liệu cho Size S
-$stmt3->bind_param("isds", $new_id, $sizeS, $gia_tien_S, $trang_thai_S);
-$stmt3->execute();
-
-// Khai báo biến cho Size M
-$sizeM = "M";
-$gia_tien_M = $thucuong['Gia_tien_M'];
-$trang_thai_M = $thucuong['Trang_thai_ban_M'];
-
-// Thêm dữ liệu cho Size M
-$stmt3->bind_param("isds", $new_id, $sizeM, $gia_tien_M, $trang_thai_M);
-$stmt3->execute();
-
-// Khai báo biến cho Size L
-$sizeL = "L";
-$gia_tien_L = $thucuong['Gia_tien_L'];
-$trang_thai_L = $thucuong['Trang_thai_ban_L'];
-
-// Thêm dữ liệu cho Size L
-$stmt3->bind_param("isds", $new_id, $sizeL, $gia_tien_L, $trang_thai_L);
-$stmt3->execute();
-
-        return $new_id;  // Trả về ID của thức uống vừa thêm
+            // Thêm chi tiết vào bảng Chi_tiet_thuc_uong
+            $sql2 = "INSERT INTO Chi_tiet_thuc_uong (Thuc_uong_ID, Size, Gia_tien, Trang_thai_ban) VALUES (?, ?, ?, ?)";
+            $stmt3 = $this->con->prepare($sql2);
+    
+            // Danh sách size
+            $sizes = ['S', 'M', 'L'];
+            foreach ($sizes as $size) {
+                $gia_tien = $thucuong['Gia_tien_' . $size];
+                $trang_thai_ban = $thucuong['Trang_thai_ban_' . $size];
+                $stmt3->bind_param("isds", $new_id, $size, $gia_tien, $trang_thai_ban);
+                $stmt3->execute();
+            }
+    
+            // Commit transaction nếu mọi thứ thành công
+            $this->con->commit();
+    
+            return $new_id;
     }
+    
+
+    
     public function delete($ID) {
         $ID = (int)$ID; // Chuyển ID thành kiểu số nguyên để đảm bảo an toàn
         // $imagePath = 'public/images/thuc_uong/' . 'image'.$ID.'.jpg';
@@ -138,33 +123,25 @@ $stmt3->execute();
     public function edit($ID, $drinkData, $check)
 {
     $ID = (int)$ID;  // Đảm bảo ID là kiểu số nguyên
-    $imagePath = 'public/images/thuc_uong/' . 'image' . $ID . '.jpg';
-
     // Cập nhật thông tin cơ bản của thức uống trong bảng Thuc_uong
     $sql = "UPDATE Thuc_uong SET Ten_thuc_uong = ?, Mo_ta = ? WHERE ID = ?";
     $stmt = $this->con->prepare($sql);
     $stmt->bind_param("ssi", $drinkData['Ten_thuc_uong'], $drinkData['Mo_ta'], $ID);
     $stmt->execute();
-
     // Lưu trữ tổng số dòng bị ảnh hưởng
     $affectedRows = $stmt->affected_rows;
-
     // Cập nhật chi tiết thức uống trong bảng Chi_tiet_thuc_uong
     $sizes = ['S', 'M', 'L'];
     foreach ($sizes as $size) {
         $sql_detail = "UPDATE Chi_tiet_thuc_uong SET Gia_tien = ?, Trang_thai_ban = ? WHERE Thuc_uong_ID = ? AND Size = ?";
         $stmt_detail = $this->con->prepare($sql_detail);
-
         $gia_tien = $drinkData['Gia_tien_' . $size];
         $trang_thai = $drinkData['Trang_thai_ban_' . $size];
-
         $stmt_detail->bind_param("dsis", $gia_tien, $trang_thai, $ID, $size);
         $stmt_detail->execute();
-        
         // Cộng dồn số dòng bị ảnh hưởng từ mỗi lần cập nhật
         $affectedRows += $stmt_detail->affected_rows;
     }
-
     // Kiểm tra kết quả tổng thể và trả về trạng thái
     if ($affectedRows > 0) {
         return true;  // Có sự thay đổi
@@ -172,6 +149,7 @@ $stmt3->execute();
         return false; // Không có sự thay đổi nào
     }
 }
+
 
     
     
