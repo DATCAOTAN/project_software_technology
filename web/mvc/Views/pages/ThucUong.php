@@ -81,10 +81,13 @@
         <!-- Header Section với nút Thêm và ô tìm kiếm -->
         <div class="d-flex justify-content-between mb-4">
             <button class="btn btn-success" data-toggle="modal" data-target="#drinkModal">Thêm thức uống</button>
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm">
-                <button class="btn btn-outline-success my-2 my-sm-0" style="margin-right: 20px;" type="submit">Tìm kiếm</button>
-            </form>
+  
+   <!-- Form tìm kiếm -->
+   <form class="form-inline" id="searchForm">
+        <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Tìm kiếm thức uống" aria-label="Tìm kiếm">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="button" id="searchButton" style="margin-right: 20px;">Tìm kiếm</button>
+    </form>
+
         </div>
 
         <!-- Hiển thị danh sách thức uống -->
@@ -119,7 +122,7 @@
                 <div class="form-row mb-3">
                     <div class="form-group col-md-5 pr-4">
                         <label for="sizeSPrice">Giá Size S</label>
-                        <input type="number" class="form-control" id="sizeSPrice" placeholder="Nhập giá Size S">
+                        <input type="number" class="form-control" id="sizeSPrice" placeholder="Nhập giá Size S"  min="0" step="1">
                     </div>
                     <div class="form-group col-md-5 ml-4">
                         <label for="sizeSStatus">Trạng thái Size S</label>
@@ -135,7 +138,7 @@
                 <div class="form-row mb-3">
                     <div class="form-group col-md-5 pr-4">
                         <label for="sizeMPrice">Giá Size M</label>
-                        <input type="number" class="form-control" id="sizeMPrice" placeholder="Nhập giá Size M">
+                        <input type="number" class="form-control" id="sizeMPrice" placeholder="Nhập giá Size M"  min="0" step="1">
                     </div>
                     <div class="form-group col-md-5 ml-4">
                         <label for="sizeMStatus">Trạng thái Size M</label>
@@ -151,7 +154,7 @@
                 <div class="form-row mb-3">
                     <div class="form-group col-md-5 pr-4">
                         <label for="sizeLPrice">Giá Size L</label>
-                        <input type="number" class="form-control" id="sizeLPrice" placeholder="Nhập giá Size L">
+                        <input type="number" class="form-control" id="sizeLPrice" placeholder="Nhập giá Size L"  min="0" step="1">
                     </div>
                     <div class="form-group col-md-5 ml-4">
                         <label for="sizeLStatus">Trạng thái Size L</label>
@@ -482,6 +485,8 @@ function resetDrinkForm() {
    
         
         });
+      
+
     }
 
 
@@ -509,7 +514,41 @@ function resetDrinkForm() {
 }
 const data = <?php echo json_encode($ThucUong); ?>;
 loadScrollContainer(data)
+$(document).ready(function() {
 
+            $('#searchButton').on('click', function(event) {
+                event.preventDefault(); // Ngăn chặn hành vi mặc định của nút
+
+                // Lấy giá trị từ ô input tìm kiếm
+                var keyword = $('#searchInput').val().trim();
+
+                // Kiểm tra nếu ô tìm kiếm không trống
+                if (keyword !== '') {
+                    console.log("Từ khóa tìm kiếm: " + keyword);
+
+                    // Gửi từ khóa tìm kiếm đến server bằng AJAX
+                    $.ajax({
+                        url: './ThucUongController/search/' + keyword, // Đường dẫn đến controller xử lý tìm kiếm
+                        type: 'POST', // Phương thức GET
+                        dataType: 'json',
+                        success: function(response) {
+                            // Xử lý dữ liệu trả về từ server
+                        
+                            console.log(response.data)
+                            loadScrollContainer(response.data);
+                        },
+                        error: function() {
+                            alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                        }
+                    });
+                } else {
+                    alert('Vui lòng nhập từ khóa tìm kiếm.');
+                }
+            });
+
+         
+
+});
 });
 
 

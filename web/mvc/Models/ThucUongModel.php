@@ -150,6 +150,36 @@ class ThucUongModel extends Database
     }
 }
 
+public function searchByName($keyword) {
+    // Thêm ký tự % vào trước và sau từ khóa để tìm kiếm gần đúng (LIKE)
+    $searchPattern = "%" . $keyword . "%";
+
+    // Câu truy vấn SQL sử dụng LIKE để tìm kiếm tên thức uống chứa từ khóa
+    $sql = "SELECT * FROM Thuc_uong WHERE Ten_thuc_uong LIKE ? AND Trang_thai = False";
+    
+    $stmt = $this->con->prepare($sql);
+    $stmt->bind_param("s", $searchPattern);  // Gán tham số vào câu truy vấn
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Kiểm tra xem có kết quả trả về không
+    if ($result->num_rows > 0) {
+        $thucUongs = [];
+        while ($row = $result->fetch_assoc()) {
+            $thucUong = [];
+            $thucUong["ID"] = $row["ID"];
+            $thucUong["Ten_thuc_uong"] = $row["Ten_thuc_uong"];
+            $thucUong["Mo_ta"] = $row["Mo_ta"];
+            $thucUong["image_URL"] = $row["image_URL"];
+            $thucUongs[] = $thucUong;
+        }
+        return $thucUongs;  // Trả về danh sách thức uống tìm được
+    } else {
+        return [];  // Trả về mảng rỗng nếu không có kết quả
+    }
+}
+
+
 
     
     

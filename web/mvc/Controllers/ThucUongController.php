@@ -262,6 +262,18 @@
             echo json_encode(['success' => false, 'message' => 'Phương thức không hợp lệ']);
         }
      }
+     public function search($keyword)  {
+        $data = $this->ThucUong->searchByName($keyword);
+        if (count($data)<=0) {
+          
+            echo json_encode(['success' => false,'data'=>$data]);
+            return;
+        }
+        header('Content-Type: application/json');
+        echo json_encode(['success' => True,'data'=>$data]);
+
+
+     }
      
    }
      
