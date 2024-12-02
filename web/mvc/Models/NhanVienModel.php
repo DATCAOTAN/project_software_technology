@@ -55,9 +55,10 @@
         // Thêm nhân viên
         public function addEmployee( $name, $phone, $email, $taikhoanId)
         {
-            $sql = "INSERT INTO `nhan_vien`(`ten`, `so_dien_thoai`, `email`, `tai_khoan_id`) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO `nhan_vien`(`ten`, `so_dien_thoai`, `email`, `tai_khoan_id`, `Trang_thai`) VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->con->prepare($sql);
-            $stmt->bind_param("ssss", $name, $phone, $email, $taikhoanId);
+            $trangThai = 0;
+            $stmt->bind_param("ssssi", $name, $phone, $email, $taikhoanId, $trangThai);
     
             if ($stmt->execute()) {
                 return true;

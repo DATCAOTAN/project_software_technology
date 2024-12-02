@@ -4,7 +4,7 @@ class TaiKhoanModel extends Database
 
     public function getAll()
     {
-        $sql = "SELECT * FROM `tai_khoan`";
+        $sql = "SELECT * FROM `tai_khoan` where id!=1";
         $result = $this->con->query($sql);
 
         // Kiểm tra lỗi

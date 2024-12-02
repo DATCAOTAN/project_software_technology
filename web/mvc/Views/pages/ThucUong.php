@@ -80,14 +80,11 @@
 <body>
         <!-- Header Section với nút Thêm và ô tìm kiếm -->
         <div class="d-flex justify-content-between mb-4">
-            <button class="btn btn-success" data-toggle="modal" data-target="#drinkModal">Thêm thức uống</button>
-  
-   <!-- Form tìm kiếm -->
-   <form class="form-inline" id="searchForm">
-        <input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Tìm kiếm thức uống" aria-label="Tìm kiếm">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="button" id="searchButton" style="margin-right: 20px;">Tìm kiếm</button>
-    </form>
-
+            <button class="btn btn-primary" data-toggle="modal" data-target="#drinkModal">Thêm thức uống</button>
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm">
+                <button class="btn btn-primary my-2 my-sm-0" style="margin-right: 20px;" type="submit">Tìm kiếm</button>
+            </form>
         </div>
 
         <!-- Hiển thị danh sách thức uống -->
@@ -108,11 +105,11 @@
             <div class="modal-body">
                 <!-- Tên và Mô tả trên cùng một hàng -->
                 <div class="form-row mb-3">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-5 pr-4">
                         <label for="drinkName">Tên</label>
                         <input type="text" class="form-control" id="drinkName" placeholder="Nhập tên thức uống">
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-5 ml-4">
                         <label for="drinkDescription">Mô tả</label>
                         <input type="text" class="form-control" id="drinkDescription" placeholder="Nhập mô tả">
                     </div>

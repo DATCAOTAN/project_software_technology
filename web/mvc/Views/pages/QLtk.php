@@ -4,8 +4,8 @@
             <h3 class="mb-4 text-center">Quản lý tài khoản</h3> <!-- Thêm text-center -->
 
             <div class="text-end mb-4">
-                <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#add-account">
-                    <i class="bi bi-plus-square"></i> Add
+                <button type="button" class="btn btn-primary shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#add-account">
+                    <i class="bi bi-plus-square"></i> Thêm tài khoản
                 </button>
             </div>
 
@@ -28,7 +28,7 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <button type="button" onclick="edit_account(<?= $account['id'] ?>)"
-                                            class="btn btn-warning btn-sm edit-link"
+                                            class="btn btn-warning btn-sm edit-link mr-2"
                                             data-bs-toggle='modal'
                                             data-bs-target='#edit-account'>
                                             <i class="bi bi-pencil"></i> Sửa
@@ -55,7 +55,7 @@
         <div class="modal-content">
             <form id="add_account_form">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Account</h1>
+                    <span class="modal-title fs-5 font-weight-bold" id="staticBackdropLabel">Add Account</span>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -70,8 +70,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
-                    <button type="button" onclick="addAccount()" class="btn custom-bg text-secondary shadow-none">SUBMIT</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="addAccount()" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>
@@ -83,7 +83,7 @@
         <form action="" id="edit_account_form" autocomplete="off">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Account</h1>
+                    <span class="modal-title fs-5 font-weight-bold" id="staticBackdropLabel">Edit Account</span>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -99,8 +99,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
-                    <button type="button" onclick="editAccountSubmit()" class="btn custom-bg text-secondary shadow-none">SUBMIT</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="editAccountSubmit()" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </form>

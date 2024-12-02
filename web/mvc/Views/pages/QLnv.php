@@ -4,8 +4,8 @@
             <h3 class="mb-4 text-center">Quản lý nhân viên</h3> <!-- Thêm text-center -->
 
             <div class="text-end mb-4">
-                <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#add-employee">
-                    <i class="bi bi-plus-square"></i> Add
+                <button type="button" class="btn btn-primary shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#add-employee">
+                    <i class="bi bi-plus-square"></i> Thêm nhân viên
                 </button>
             </div>
 
@@ -32,7 +32,7 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <button type="button" onclick="edit_staff(<?= $employee['id'] ?>)"
-                                            class="btn btn-warning btn-sm edit-link"
+                                            class="btn btn-warning btn-sm edit-link mr-2"
                                             data-bs-toggle='modal'
                                             data-bs-target='#edit-employee'>
                                             <i class="bi bi-pencil"></i> Sửa
@@ -60,7 +60,7 @@
         <div class="modal-content">
             <form id="add_employee_form">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Staff</h1>
+                    <span class="modal-title fs-5 font-weight-bold" id="staticBackdropLabel">Add Staff</span>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -88,8 +88,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
-                    <button type="button" onclick="addStaff()" class="btn custom-bg text-secondary shadow-none">SUBMIT</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="addStaff()" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>
@@ -101,7 +101,7 @@
         <form action="" id="edit_employee_form" autocomplete="off">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Employee</h1>
+                    <span class="modal-title fs-5 font-weight-bold" id="staticBackdropLabel">Edit Staff</span>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -127,14 +127,15 @@
                             </select>
                         </div>
                         <input type="hidden" name="employee_id">
+                        <input type="hidden" name="currentAccount_id">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold" for="account">Tài Khoản Đang sử dụng: <span id="account_name" name="account_name"></span></label>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
-                    <button type="button" onclick="editStaffsubmit()" class="btn custom-bg text-secondary shadow-none">SUBMIT</button>
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" onclick="editStaffsubmit()" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </form>
@@ -205,7 +206,7 @@
             edit_employee_form.elements['name'].value = data.ten;
             edit_employee_form.elements['phone'].value = data.so_dien_thoai;
             edit_employee_form.elements['email'].value = data.email;
-            // edit_employee_form.elements['account'].value = data.tai_khoan_id;
+            edit_employee_form.elements['currentAccount_id'].value = data.tai_khoan_id;
             document.getElementById('account_name').innerHTML = data.tai_khoan_id + "-" + data.ten_tai_khoan;
         }
         xhr.send('get_employee=' + id);
@@ -216,12 +217,7 @@
         var name = edit_employee_form.elements['name'].value;
         var phone = edit_employee_form.elements['phone'].value;
         var email = edit_employee_form.elements['email'].value;
-        var account_id = edit_employee_form.elements['account'].value
-        console.log(name + " " + phone + " " + email + " " + account_id);
-        if (account_id == "") {
-            alert("Vui lòng chọn tài khoản");
-            return;
-        }
+        var account_id = edit_employee_form.elements['account'].value == "" ? edit_employee_form.elements['currentAccount_id'].value : edit_employee_form.elements['account'].value;
 
         var data = new FormData();
         data.append('name', name);

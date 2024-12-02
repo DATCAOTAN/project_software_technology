@@ -3,13 +3,13 @@
 
     <!-- "Dang lam" section -->
     <div>
-        <h4 class="text-danger">Đơn đang làm</h4>
+        <h4 class="text-danger">Đơn đang làm: <span id="totalAmountDL"></span></h4>
         <div id="dang_lam_list" class="list-group"></div>
     </div>
 
     <!-- "Da xong" section -->
     <div class="mt-4">
-        <h4 class="text-success">Đơn đã xong</h4>
+        <h4 class="text-success">Đơn đã xong: <span id="totalAmountDX"></span></h4>
         <div id="da_xong_list" class="list-group"></div>
 
         <!-- Phân trang -->
@@ -33,7 +33,7 @@
             <div class="modal-body">
                 <table class="table table-striped">
                     <thead>
-                        <tr>
+                        <tr class="bg-dark text-light">
                             <th>Tên thức uống</th>
                             <th>Kích cỡ</th>
                             <th>Số lượng</th>
@@ -74,72 +74,94 @@
 
     function renderDangLam(hoaDons) {
         const list = $('#dang_lam_list');
+        const amount=$('#totalAmountDL');
         list.empty();
-
-        hoaDons.forEach(hd => {
+        if(hoaDons.length === 0) {
             const item = `
-                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-id="${hd.id}">
-                    Hóa đơn #${hd.id} - ${hd.tong_tien} VNĐ
-                    <div>
-                        <button class="btn btn-success btn-sm mark-complete" data-id="${hd.id}">Hoàn thành</button>
-                        <button class="btn btn-sm btn-danger hide-order" data-id="${hd.id}">Xóa</button>
-                    </div>
-                </a>`;
+                <span class="font-italic">Không có hóa đơn đang làm trong dữ liệu</span>    
+            `;
+            amount.text(0);
             list.append(item);
-        });
-
-        // Thêm sự kiện cho click vào hóa đơn để hiện chi tiết
-        list.find('a').on('click', function (e) {
-            const hoaDonId = $(this).data('id');
-            showDetails(hoaDonId);  // Gọi hàm hiển thị chi tiết
-        });
-
-        // Ngăn click vào nút Hoàn thành và Xóa không kích hoạt hiển thị chi tiết
-        list.find('.mark-complete').on('click', function (e) {
-            e.stopPropagation(); // Chặn sự kiện click lan tỏa
-            const hoaDonId = $(this).data('id');
-            markAsCompleted(hoaDonId);
-        });
-
-        list.find('.hide-order').on('click', function (e) {
-            e.stopPropagation();
-            const hoaDonId = $(this).data('id');
-            hideOrder(hoaDonId);
-        });
+        }
+        else
+        {
+            amount.text(hoaDons.length);
+            hoaDons.forEach(hd => {
+                const item = `
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-id="${hd.id}">
+                        Hóa đơn #${hd.id} - ${hd.tong_tien} VNĐ
+                        <div>
+                            <button class="btn btn-success btn-sm mark-complete" data-id="${hd.id}">Hoàn thành</button>
+                            <button class="btn btn-sm btn-danger hide-order" data-id="${hd.id}">Xóa</button>
+                        </div>
+                    </a>`;
+                list.append(item);
+            });
+    
+            // Thêm sự kiện cho click vào hóa đơn để hiện chi tiết
+            list.find('a').on('click', function (e) {
+                const hoaDonId = $(this).data('id');
+                showDetails(hoaDonId);  // Gọi hàm hiển thị chi tiết
+            });
+    
+            // Ngăn click vào nút Hoàn thành và Xóa không kích hoạt hiển thị chi tiết
+            list.find('.mark-complete').on('click', function (e) {
+                e.stopPropagation(); // Chặn sự kiện click lan tỏa
+                const hoaDonId = $(this).data('id');
+                markAsCompleted(hoaDonId);
+            });
+    
+            list.find('.hide-order').on('click', function (e) {
+                e.stopPropagation();
+                const hoaDonId = $(this).data('id');
+                hideOrder(hoaDonId);
+            });
+        }
     }
 
     function renderDaXong(hoaDons, page) {
         const list = $('#da_xong_list');
+        const amount=$('#totalAmountDX');
         list.empty();
-
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const items = hoaDons.slice(start, end);
-
-        items.forEach(hd => {
+        if(hoaDons.length === 0) {
             const item = `
-                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-id="${hd.id}">
-                    Hóa đơn #${hd.id} - ${hd.tong_tien} VNĐ
-                    <div>
-                        <button class="btn btn-sm btn-danger hide-order" data-id="${hd.id}">Xóa</button>
-                    </div>
-                </a>`;
+                <span class="font-italic">Không có hóa đơn đã xong trong dữ liệu</span>    
+            `;
+            amount.text(0);
             list.append(item);
-        });
-
-        // Thêm sự kiện cho click vào hóa đơn để hiện chi tiết
-        list.find('a').on('click', function (e) {
-            const hoaDonId = $(this).data('id');
-            showDetails(hoaDonId);  // Gọi hàm hiển thị chi tiết
-        });
-
-        list.find('.hide-order').on('click', function (e) {
-            e.stopPropagation(); // Chặn sự kiện click lan tỏa
-            const hoaDonId = $(this).data('id');
-            hideOrder(hoaDonId);
-        });
-
-        renderPagination(hoaDons.length, page);
+        }
+        else
+        {
+            amount.text(hoaDons.length);
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const items = hoaDons.slice(start, end);
+    
+            items.forEach(hd => {
+                const item = `
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-id="${hd.id}">
+                        Hóa đơn #${hd.id} - ${hd.tong_tien} VNĐ
+                        <div>
+                            <button class="btn btn-sm btn-danger hide-order" data-id="${hd.id}">Xóa</button>
+                        </div>
+                    </a>`;
+                list.append(item);
+            });
+    
+            // Thêm sự kiện cho click vào hóa đơn để hiện chi tiết
+            list.find('a').on('click', function (e) {
+                const hoaDonId = $(this).data('id');
+                showDetails(hoaDonId);  // Gọi hàm hiển thị chi tiết
+            });
+    
+            list.find('.hide-order').on('click', function (e) {
+                e.stopPropagation(); // Chặn sự kiện click lan tỏa
+                const hoaDonId = $(this).data('id');
+                hideOrder(hoaDonId);
+            });
+    
+            renderPagination(hoaDons.length, page);
+        }
     }
 
     // Đánh dấu đơn hàng là "Hoàn thành"
