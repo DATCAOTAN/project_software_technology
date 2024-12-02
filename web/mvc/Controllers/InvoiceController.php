@@ -15,24 +15,6 @@ class InvoiceController extends Controller {
             exit();
         }
     
-        // Cập nhật trạng thái đơn hàng
-        public function updateStatus() {
-            if (isset($_POST['hoa_don_id']) && isset($_POST['new_status'])) {
-                $hoaDonId = $_POST['hoa_don_id'];
-                $newStatus = $_POST['new_status'];
-                $updated = $this->invoiceModel->updateHoaDonStatus($hoaDonId, $newStatus);
-                header('Content-Type: application/json');
-
-                if ($updated) {
-                    echo json_encode(['success' => true, 'message' => 'Cập nhật thành công.']);
-                } else {
-                    echo json_encode(['success' => false, 'message' => 'Không thể cập nhật trạng thái.']);
-                }
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ.']);
-            }
-        }
-    
         // Lấy chi tiết hóa đơn
         public function getInvoiceDetails($hoaDonId) {
             $details = $this->invoiceModel->getInvoiceDetailsByHoaDonId($hoaDonId);
