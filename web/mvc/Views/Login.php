@@ -114,18 +114,6 @@ if ($error) {
             }
     });
 
-    // $.ajax({
-    //     url: './LoginController/checkLogged', // Đường dẫn tới file PHP để kiểm tra trạng thái
-    //     type: 'GET',
-    //     success: function(response) {
-    //         var result = JSON.parse(response);
-    //         if (response.logged) {
-    //             window.location.href = response.redirectUrl;
-    //         }
-    //     }
-    // });
-
-
     // Handle form submission via AJAX
     $('#login-form').on('submit', function(e) {
         e.preventDefault(); // Prevent the form from submitting normally

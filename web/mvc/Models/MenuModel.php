@@ -4,7 +4,7 @@
     class MenuModel extends Database {
 
         public function getTotalDrinks(): int {
-            $sql = "SELECT COUNT(*) AS total FROM Thuc_uong";
+            $sql = "SELECT COUNT(*) AS total FROM Thuc_uong WHERE Trang_thai = '0'";
             $stmt = $this->con->prepare($sql);
             if ($stmt) {
                 $stmt->execute();
@@ -73,6 +73,7 @@
                     tu.Mo_ta AS description, 
                     tu.image_URL AS image_url
                 FROM Thuc_uong tu
+                WHERE Trang_thai = '0'
                 LIMIT ? OFFSET ?
             ";
         

@@ -60,16 +60,6 @@ class LoginController extends Controller{
             }
         }
     }
-    
-    // public function checkLogged() {
-    //     // Kiểm tra nếu người dùng đã đăng nhập
-    //     if (isset($_SESSION['user']) && $_SESSION['user']['logged'] === true) {
-    //         // Nếu đã đăng nhập, chuyển hướng về trang Home
-    //         echo json_encode([
-    //             'redirectUrl' => './ThucUongController' // Địa chỉ trang chuyển hướng cho người dùng thường
-    //         ]);
-    //     }
-    // }
 
     public function logout() {
         if (session_status() == PHP_SESSION_NONE) {

@@ -211,8 +211,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
-                            <img id="foodDetailsImage" src="your-image-url.jpg" alt="Food Image" class="img-fluid rounded">
+                        <div class="col-md-6" style="height:500px">
+                            <img id="foodDetailsImage" src="your-image-url.jpg" alt="Food Image" class="img-fluid rounded" style="object-fit: cover; height: 100%; width: 100%;">
                         </div>
                         <div class="col-md-6">
                             <h3 id="foodDetailsName"></h3>
@@ -537,7 +537,7 @@
                                     $('#drink-container').append(`
                                         <div class="col-lg-4 col-md-6 mb-4">
                                             <div class="card h-100 shadow-sm">
-                                                <div class="card-img-top text-center pt-3">
+                                                <div class="card-img-top text-center pt-3" style="height: 125px;">
                                                     <img src="public/images/thuc_uong/${drink.imageUrl}" alt="${drink.name}" class="img-fluid rounded" style="height: 125px; width: 150px; object-fit: cover;">
                                                 </div>
                                                 <div class="card-body text-center">
