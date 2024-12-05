@@ -16,20 +16,35 @@
         }
 
         public function getAllDrinksWithDetails(int $page = 1, int $itemsPerPage = 6): array {
-            $drinks = $this->getAllDrinks($page, $itemsPerPage);
+            // Lấy toàn bộ danh sách đồ uống
+            $allDrinks = $this->getAllDrinks(); // Không phân trang ở đây
         
-            foreach ($drinks as $drink) {
+            // Mảng để lưu đồ uống hợp lệ
+            $validDrinks = [];
+        
+            foreach ($allDrinks as $drink) {
+                // Lấy chi tiết của đồ uống
                 $details = $this->getDrinkDetails($drink->getId());
-                foreach ($details as $detail) {
-                    $drink->addDetail(
-                        $detail['size'],
-                        $detail['price'],
-                        $detail['status']
-                    );
+        
+                // Chỉ thêm đồ uống nếu có chi tiết
+                if (!empty($details)) {
+                    foreach ($details as $detail) {
+                        $drink->addDetail(
+                            $detail['size'],
+                            $detail['price'],
+                            $detail['status']
+                        );
+                    }
+                    $validDrinks[] = $drink; // Thêm đồ uống vào danh sách hợp lệ
                 }
             }
         
-            return $drinks;
+            // Phân trang danh sách hợp lệ
+            $totalDrinks = count($validDrinks);
+            $offset = ($page - 1) * $itemsPerPage;
+            $pagedDrinks = array_slice($validDrinks, $offset, $itemsPerPage);
+        
+            return $pagedDrinks;
         }
 
         public function getDrinkDetails(int $drinkId): array {
@@ -39,7 +54,7 @@
                     Gia_tien AS price, 
                     Trang_thai_ban AS status
                 FROM Chi_tiet_thuc_uong
-                WHERE Thuc_uong_ID = ?
+                WHERE Thuc_uong_ID = ? and Trang_thai_ban='Dang ban'
             ";
         
             $stmt = $this->con->prepare($sql);
@@ -63,8 +78,7 @@
             throw new Exception("Failed to prepare statement.");
         }
         
-        public function getAllDrinks(int $page = 1, int $itemsPerPage = 6): array {
-            $offset = ($page - 1) * $itemsPerPage;
+        public function getAllDrinks(): array {
         
             $sql = "
                 SELECT 
@@ -74,12 +88,10 @@
                     tu.image_URL AS image_url
                 FROM Thuc_uong tu
                 WHERE Trang_thai = '0'
-                LIMIT ? OFFSET ?
             ";
         
             $stmt = $this->con->prepare($sql);
             if ($stmt) {
-                $stmt->bind_param("ii", $itemsPerPage, $offset);
                 $stmt->execute();
                 $result = $stmt->get_result();
         

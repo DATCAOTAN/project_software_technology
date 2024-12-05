@@ -538,10 +538,11 @@
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
-                            $('#drink-container').empty();  // Xóa các món uống cũ
+                            $('#drink-container').empty(); // Xóa các món uống cũ
+                            const itemsPerPage = 6;
+
                             if (data.length > 0) {
                                 data.forEach(function(drink) {
-                                    console.log(drink);
                                     $('#drink-container').append(`
                                         <div class="col-lg-4 col-md-6 mb-4">
                                             <div class="card h-100 shadow-sm">
@@ -559,7 +560,17 @@
                                         </div>
                                     `);
                                 });
+
+                                // Thêm các placeholder nếu số sản phẩm ít hơn itemsPerPage
+                                for (let i = data.length; i < itemsPerPage; i++) {
+                                    $('#drink-container').append(`
+                                        <div class="col-lg-4 col-md-6 mb-4" style="min-height: 245px;">
+                                            <div class="card h-100 border-0"></div>
+                                        </div>
+                                    `);
+                                }
                             } else {
+                                // Nếu không có dữ liệu
                                 $('#drink-container').append('<p class="text-center w-100">No drinks found.</p>');
                             }
                         },

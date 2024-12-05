@@ -42,7 +42,7 @@ class LoginController extends Controller{
                         'message' => 'Đăng nhập thành công',
                         'logged' => true,
                         'isAdmin' => false,
-                        'redirectUrl' => './ThucUongController' // Địa chỉ trang chuyển hướng cho người dùng thường
+                        'redirectUrl' => './InvoiceController' // Địa chỉ trang chuyển hướng cho người dùng thường
                     ]);
                 }
             } else {
