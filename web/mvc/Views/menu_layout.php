@@ -228,7 +228,7 @@
                                 <input type="number" id="quantity" class="form-control" min="1" value="1">
                             </div>
                             <h4 class="text-danger" id="foodDetailsPrice"></h4>
-                            <button class="btn btn-success w-100" id="addToCartButton">Add to Cart</button>
+                            <button class="btn btn-danger w-100" id="addToCartButton">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -269,7 +269,7 @@
 
                     <!-- Payment Button -->
                     <div id="payButtonContainer">
-                        <button class="btn btn-success w-100" id="payButton" disabled>Pay Now</button>
+                        <button class="btn btn-danger w-100" id="payButton" disabled>Pay Now</button>
                     </div>
                 </div>
             </div>
@@ -340,12 +340,20 @@
                 const selectedBank = bankSelect.find(':selected');
                 const fee = parseFloat(selectedBank.attr('data-fee'));
                 
-                const feeAmount = (totalAmount * fee) / 100;
-                amountAfterFee = totalAmount + feeAmount;
-
                 // Update fee and amount after fee
-                $('#feeAmount').text(fee.toFixed(2));
-                $('#amountAfterFee').text(amountAfterFee.toFixed(0));
+                if(!isNaN(fee))
+                {
+                    const feeAmount = (totalAmount * fee) / 100;
+                    amountAfterFee = totalAmount + feeAmount;
+                    
+                    $('#feeAmount').text(fee.toFixed(2));
+                    $('#amountAfterFee').text(amountAfterFee.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+                }
+                else
+                {
+                    $('#feeAmount').text(0);
+                    $('#amountAfterFee').text(totalAmount.toLocaleString());
+                }
 
                 // Enable the Pay button when a valid bank is selected
                 if (selectedBank.length > 0) {
@@ -365,7 +373,7 @@
                 const orderData = {
                     customerId: customerId,
                     paymentMethod: paymentMethod,
-                    totalAmount: amountAfterFee,
+                    totalAmount: amountAfterFee.toFixed(0),
                     items: cart
                 };
 
@@ -438,7 +446,7 @@
                     if (itemStatus === 'Het hang') {
                         sizeOption.innerHTML = `
                             <label class="form-check-label" for="${size}">
-                                <strong>${size.charAt(0).toUpperCase() + size.slice(1)}</strong> - ${price} VND (Đã hết hàng)
+                                <strong>${size.charAt(0).toUpperCase() + size.slice(1)}</strong> - ${price.toLocaleString()} VND (Đã hết hàng)
                             </label>
                         `;
                         sizeOption.classList.add('out-of-stock');
@@ -451,11 +459,11 @@
                                 id="${size}" 
                                 value="${price}">
                             <label class="form-check-label" for="${size}">
-                                <strong>${size.charAt(0).toUpperCase() + size.slice(1)}</strong> - ${price} VND
+                                <strong>${size.charAt(0).toUpperCase() + size.slice(1)}</strong> - ${price.toLocaleString()} VND
                             </label>
                         `;
 
-                        // Cho phép click toàn vùng
+                        // Cho phép click toàn vùng 
                         sizeOption.addEventListener('click', () => {
                             const radioInput = sizeOption.querySelector('input');
                             radioInput.checked = true; // Chọn
@@ -516,7 +524,7 @@
 
             function updateTotalPrice(pricePerItem, quantity) {
                 const total = pricePerItem * quantity;
-                document.getElementById('foodDetailsPrice').textContent = `Total: ${total} VND`;
+                document.getElementById('foodDetailsPrice').textContent = `Total: ${total.toLocaleString()} VND`;
             }
 
             $(document).ready(function() {
@@ -542,7 +550,7 @@
                                                 </div>
                                                 <div class="card-body text-center">
                                                     <h6 class="card-title mb-1">${drink.name}</h6>
-                                                    <p class="text-danger fw-bold mb-2">${Math.min(...drink.details.map(d => d.price))} VND</p>
+                                                    <p class="text-danger fw-bold mb-2">${Math.min(...drink.details.map(d => d.price)).toLocaleString()} VND</p>
                                                     <button class="btn btn-outline-danger btn-sm" onclick='showFoodDetails(${JSON.stringify(drink)})'>
                                                         <i class="bi bi-cart"></i> View Details
                                                     </button>
@@ -664,7 +672,7 @@
                         e.preventDefault(); // Ngăn không cho mở modal
                     } else {
                         // Hiển thị modal
-                        $('#totalAmount').text(totalPrice);
+                        $('#totalAmount').text(totalPrice.toLocaleString());
                         const paymentModal = new bootstrap.Modal(document.getElementById('nameModal'));
                         paymentModal.show();
                     }
@@ -672,7 +680,7 @@
 
                 // Gọi hàm loadOrders khi trang tải
                 loadOrders();
-                setInterval(loadOrders, 5000);
+                //setInterval(loadOrders, 5000); khiến web bị lag
             });
             
             function loadOrders() {
@@ -721,7 +729,7 @@
                                     <div class="order-box border p-3 mb-3 rounded shadow-sm">
                                         <p><strong>Mã hóa đơn:</strong> ${order.id}</p>
                                         <p><strong>Ngày:</strong> ${order.ngay_gio}</p>
-                                        <p><strong>Tổng:</strong> ${order.tong_tien} VND</p>
+                                        <p><strong>Tổng:</strong> ${order.tong_tien.toLocaleString()} VND</p>
                                         <p><strong>Trạng thái:</strong> 
                                             <span style="color: ${order.trang_thai === 'Da xong' ? 'green' : (order.trang_thai === 'Dang lam' ? 'red' : 'inherit')}">
                                                 ${order.trang_thai === 'Dang lam' ? 'Đang làm' : 'Đã xong'}
@@ -783,7 +791,7 @@
                                     data-index="${index}" 
                                     onchange="updateItemQuantity(event)">
                             </div>
-                                    <span class="text-danger ml-2">${item.totalPrice} VND</span>
+                                    <span class="text-danger ml-2">${item.totalPrice.toLocaleString()} VND</span>
                             <button 
                                 class="btn btn-sm btn-danger remove-btn" 
                                 onclick="removeItemFromCart(${index})">X</button>
@@ -792,12 +800,15 @@
                 });
 
                 cartTitle.textContent = `Giỏ hàng (${totalItems})`;
-                totalPriceElement.textContent = `Total: ${totalPrice} VND`;
+                totalPriceElement.textContent = `Total: ${totalPrice.toLocaleString()} VND`;
             }
 
             function removeItemFromCart(index) {
                 // Xóa món đồ khỏi giỏ hàng theo index
                 cart.splice(index, 1);
+
+                saveCartToLocalStorage(); // không thêm thì load lại vẫn không thay đổi
+
                 updateCartUI(); // Cập nhật lại giao diện giỏ hàng
             }
             
