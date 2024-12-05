@@ -247,6 +247,7 @@
              
             $flag = $this->ThucUong->edit($ID,$drinkData,$check);
             if ($flag) {
+                $data=$this->ThucUong->getAll();
                 echo json_encode(['success' => True, 'message' => 'Sửa thành công','data'=>$data]);
                 return;
             }
@@ -263,8 +264,9 @@
             echo json_encode(['success' => false, 'message' => 'Phương thức không hợp lệ']);
         }
      }
-     public function search($keyword)  {
-        $data = $this->ThucUong->searchByName($keyword);
+     public function search()  {
+       
+        $data = $this->ThucUong->searchByName($_POST['keyword']);
         if (count($data)<=0) {
           
             echo json_encode(['success' => false,'data'=>$data]);
