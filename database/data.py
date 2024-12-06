@@ -39,6 +39,10 @@ def them_tai_khoan_random():
 
 # Hàm thêm dữ liệu ngẫu nhiên vào bảng nhan_vien
 def them_nhan_vien_random():
+    id_admin=1
+    query = "INSERT INTO nhan_vien (ten, so_dien_thoai, email, tai_khoan_id,Trang_thai) VALUES ('admin', '', '',%s,'0')"
+    cursor.execute(query, (id_admin,))
+    conn.commit()
     for i in range(2, sl_tkhoan+1):
         ten = fake.name()
         so_dien_thoai = f"092345678{i}"

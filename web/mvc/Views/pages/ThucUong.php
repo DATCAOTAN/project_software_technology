@@ -324,6 +324,7 @@ $.ajax({
         console.log(response.success);
         if (response.success) {
             alert('Thêm thành công');
+            resetDrinkForm()
             loadScrollContainer(response.data)
         } else {
             alert(response.message || 'Có lỗi xảy ra!');
