@@ -691,7 +691,7 @@
 
                 // Gọi hàm loadOrders khi trang tải
                 loadOrders();
-                //setInterval(loadOrders, 5000); khiến web bị lag
+                setInterval(loadOrders, 10000);
             });
             
             function loadOrders() {
