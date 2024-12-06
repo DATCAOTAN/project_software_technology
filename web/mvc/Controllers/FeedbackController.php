@@ -49,10 +49,6 @@ class FeedbackController extends Controller
         $so_sao = $_POST['so_sao'];  // Mặc định là 5 sao
         $noi_dung = $_POST['noi_dung'];  // Nội dung có thể trống
 
-        if (!$ten_khach_hang) {
-            $ten_khach_hang = 'An danh';
-        }
-
         if (!$noi_dung) {
             $noi_dung = 'Khong co noi dung';
         }
