@@ -742,8 +742,16 @@
                                         <p><strong>Ngày:</strong> ${order.ngay_gio}</p>
                                         <p><strong>Tổng:</strong> ${order.tong_tien.toLocaleString()} VND</p>
                                         <p><strong>Trạng thái:</strong> 
-                                            <span style="color: ${order.trang_thai === 'Da xong' ? 'green' : (order.trang_thai === 'Dang lam' ? 'red' : 'inherit')}">
-                                                ${order.trang_thai === 'Dang lam' ? 'Đang làm' : 'Đã xong'}
+                                            <span style="color: ${
+                                                order.trang_thai === 'Da xong' ? 'green' : 
+                                                (order.trang_thai === 'Dang lam' ? 'red' : 
+                                                (order.trang_thai === 'An' ? 'gray' : 'inherit'))
+                                            }">
+                                                ${
+                                                    order.trang_thai === 'Dang lam' ? 'Đang làm' : 
+                                                    (order.trang_thai === 'Da xong' ? 'Đã xong' : 
+                                                    (order.trang_thai === 'An' ? 'Đã bị hủy' : order.trang_thai))
+                                                }
                                             </span>
                                         </p>
                                         <div class="order-details">
